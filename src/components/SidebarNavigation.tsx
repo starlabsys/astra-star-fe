@@ -4,6 +4,7 @@ import { BsArrowLeftShort, BsChevronDown, BsSearch } from 'react-icons/bs'
 import {AiFillEnvironment} from 'react-icons/ai'
 import { RiDashboardFill } from "react-icons/ri";
 import Image from 'next/image';
+import Link from 'next/link';
 
 const SidebarNavigation = () => {
   const [isOpen, setIsOpen] = React.useState(true)
@@ -16,8 +17,16 @@ const SidebarNavigation = () => {
     },{
       'name': 'Master Data PKB',
       'icon': 'AiFillEnvironment',
+      'link': '/pkb'
+    },{
+      'name': 'History PKB',
+      'icon': 'AiFillEnvironment',
+      'link': '/history-pkb'
+    },{
+      'name': 'Profile',
+      'icon': 'AiFillEnvironment',
       'link': '/profile'
-    },
+    }
     // {
     //   'name': 'Settings',
     //   'icon': 'AiFillEnvironment',
@@ -50,7 +59,7 @@ const SidebarNavigation = () => {
 
         <ul className='pt-2'>
           {Menus.map((menu, index)=>(
-            <>
+            <Link href={menu.link}>
               <li key={index} className='text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-gray-500 hover:text-white rounded-md mt-2'>
                 <span className='text-2xl block float-left'>
                   <RiDashboardFill />
@@ -64,16 +73,7 @@ const SidebarNavigation = () => {
                   }}/>
                 )} */}
               </li>
-              {/* {menu.subMenus && subMenuOpen && isOpen && (
-                <ul>
-                  {menu.subMenus.map((subMenu, index)=>(
-                    <li key={index} className='text-black text-sm flex items-center gap-x-4 cursor-pointer p-2 px-5 hover:bg-gray-500 hover:text-white rounded-md mt-2'>
-                      {subMenu.name}
-                    </li>
-                  ))}
-                </ul>
-              )} */}
-            </>
+            </Link>
           ))}
         </ul>
     </div>

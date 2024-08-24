@@ -3,6 +3,7 @@ import { title } from "@/src/components/primitives";
 import React from "react";
 import { Calendar } from "@nextui-org/calendar";
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import LineChart from "@/src/components/LineChart";
 
 
 
@@ -43,8 +44,8 @@ export default function DashboardPage() {
           </TableBody>
         </Table>
       </div>
-      <div>
-        x
+      <div className="w-full">
+        <LineChart />
       </div>
     </div>
   );
