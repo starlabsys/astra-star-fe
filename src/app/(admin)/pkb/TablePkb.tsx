@@ -1,45 +1,40 @@
-"use client";
-import React from 'react'
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell} from "@nextui-org/react";
+// src/components/TablePkb.tsx
+import React from 'react';
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import usePkbService from '@/src/module/admin/pkb/pkbService';
 
+const TablePkb: React.FC = () => {
+  const { importExcel } = usePkbService();
 
-const TablePkb = () => {
   return (
     <Table aria-label="Example static collection table">
-        <TableHeader>
+      <TableHeader>
         <TableColumn>Nama Pemilik</TableColumn>
         <TableColumn>Tipe Kendaraan</TableColumn>
         <TableColumn>Plat Nomor</TableColumn>
         <TableColumn>Status</TableColumn>
-        </TableHeader>
-        <TableBody>
-        <TableRow key="1">
-            <TableCell>Tony Reichert</TableCell>
-            <TableCell>Matic</TableCell>
-            <TableCell>KB 1123 HF</TableCell>
-            <TableCell>Active</TableCell>
-        </TableRow>
-        <TableRow key="2">
-            <TableCell>Zoey Lang</TableCell>
-            <TableCell>Manual</TableCell>
-            <TableCell>KB 1123 HF</TableCell>
-            <TableCell>Paused</TableCell>
-        </TableRow>
-        <TableRow key="3">
-            <TableCell>Jane Fisher</TableCell>
-            <TableCell>Manual</TableCell>
-            <TableCell>KB 1123 HF</TableCell>
-            <TableCell>Active</TableCell>
-        </TableRow>
-        <TableRow key="4">
-            <TableCell>William Howard</TableCell>
-            <TableCell>Matic</TableCell>
-            <TableCell>KB 1123 HF</TableCell>
-            <TableCell>Vacation</TableCell>
-        </TableRow>
-        </TableBody>
-  </Table>
-  )
-}
+      </TableHeader>
+      <TableBody>
+        {importExcel.length > 0 ? (
+          importExcel.map((data, index) => (
+            <TableRow key={index}>
+              <TableCell>{data.nama_pemilik || 'N/A'}</TableCell>
+              <TableCell>{data.tipe_kendaraan || 'N/A'}</TableCell>
+              <TableCell>{data.plat_nomor || 'N/A'}</TableCell>
+              <TableCell>{data.status || 'N/A'}</TableCell>
+            </TableRow>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell >No data available</TableCell>
+            <TableCell>No data available</TableCell>
+            <TableCell>No data available</TableCell>
+            <TableCell>No data available</TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  );
+};
 
-export default TablePkb
+export default TablePkb;

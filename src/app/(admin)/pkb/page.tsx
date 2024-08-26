@@ -4,9 +4,11 @@ import { Button } from '@nextui-org/button'
 import React, { useState } from 'react'
 import TablePkb from './TablePkb'
 import ModalPkb from './ModalPkb'
+import PkbService from '@/src/module/admin/pkb/pkbService';
 
 const page: React.FC = () => {
     const [isModalOpen, setModalOpen] = useState(false);
+
 
     const handleOpenModal = () => {
         setModalOpen(true);
