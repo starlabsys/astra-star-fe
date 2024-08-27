@@ -1,5 +1,6 @@
+"use client"
 import React from 'react'
-import TablePkb from '../pkb/TablePkb'
+import TablePkb from './TablePkb'
 
 const page = () => {
   return (

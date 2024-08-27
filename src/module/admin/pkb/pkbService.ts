@@ -1,3 +1,4 @@
+"use client";
 // src/module/admin/pkb/pkbService.ts
 import { useState } from 'react';
 import * as XLSX from 'xlsx';
