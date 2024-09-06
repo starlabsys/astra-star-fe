@@ -1,5 +1,5 @@
 export interface ReturnResult {
-    message : string,
-    statusCode : number
-    data : any
+  message: string;
+  statusCode: number;
+  data: any;
 }

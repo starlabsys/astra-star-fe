@@ -1,8 +1,7 @@
-import NavbarNavigation from "@/src/components/NavbarNavigation";
-import SidebarNavigation from "@/src/components/SidebarNavigation";
 import React from "react";
 
-import { BsArrowLeftShort } from "react-icons/bs";
+import NavbarNavigation from "@/src/components/NavbarNavigation";
+import SidebarNavigation from "@/src/components/SidebarNavigation";
 
 export default function DashboardLayout({
   children,
@@ -16,11 +15,11 @@ export default function DashboardLayout({
     //   </div>
     // </section>
     <section className="flex">
-        <SidebarNavigation />
-        <div className="w-full">
-            <NavbarNavigation />
-            {children}
-        </div>
+      <SidebarNavigation />
+      <div className="w-full">
+        <NavbarNavigation />
+        {children}
+      </div>
     </section>
   );
 }

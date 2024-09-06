@@ -1,17 +1,22 @@
-"use client"
-import { title } from "@/src/components/primitives";
+"use client";
 import React from "react";
 import { Calendar } from "@nextui-org/calendar";
-import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
+} from "@nextui-org/react";
+
 import LineChart from "@/src/components/LineChart";
-
-
 
 export default function DashboardPage() {
   return (
     <div className="px-7 py-2 grid grid-cols-2 gap-4">
       <div>
-        <Calendar aria-label="Date (No Selection)"  />
+        <Calendar aria-label="Date (No Selection)" />
       </div>
       <div>
         <Table aria-label="Example static collection table">

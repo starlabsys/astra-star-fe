@@ -1,6 +1,6 @@
-// src/context/PkbContext.tsx
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { PkbData } from '@/src/module/admin/pkb/pkbService';
+import React, { createContext, useContext, useState, ReactNode } from "react";
+
+import { PkbData } from "@/src/module/admin/pkb/pkbService";
 
 interface PkbContextType {
   importExcel: PkbData[];
@@ -9,7 +9,9 @@ interface PkbContextType {
 
 const PkbContext = createContext<PkbContextType | undefined>(undefined);
 
-export const PkbProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const PkbProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [importExcel, setImportExcel] = useState<PkbData[]>([]);
 
   return (
@@ -21,8 +23,10 @@ export const PkbProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
 export const usePkbContext = () => {
   const context = useContext(PkbContext);
+
   if (!context) {
-    throw new Error('usePkbContext must be used within a PkbProvider');
+    throw new Error("usePkbContext must be used within a PkbProvider");
   }
+
   return context;
 };

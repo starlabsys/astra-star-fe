@@ -1,19 +1,27 @@
-// src/components/TablePkb.tsx
-import React from 'react';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from "@nextui-org/react";
-import { usePkbContext } from './PkbContext';
-import { PkbData, usePkbService } from '@/src/module/admin/pkb/pkbService';
+import React from "react";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  Button,
+} from "@nextui-org/react";
+
+import { usePkbContext } from "./PkbContext";
+
+import { PkbData, usePkbService } from "@/src/module/admin/pkb/pkbService";
 
 const TablePkb: React.FC = () => {
   const { importExcel } = usePkbContext(); // Correctly use the context
-  const { uploadData } = usePkbService(); 
+  const { uploadData } = usePkbService();
 
   const submit = async () => {
-    let dataExcel : PkbData[] = importExcel;
-
+    let dataExcel: PkbData[] = importExcel;
 
     await uploadData(dataExcel);
-  }
+  };
 
   return (
     <div>
@@ -29,11 +37,11 @@ const TablePkb: React.FC = () => {
           {importExcel.length > 0 ? (
             importExcel.map((data: any, index: number) => (
               <TableRow key={index}>
-                <TableCell>{data.namaPemilik || 'N/A'}</TableCell>
-                <TableCell>{data.typeMotor || 'N/A'}</TableCell>
-                <TableCell>{data.platNumber || 'N/A'}</TableCell>
-                <TableCell>{data.alasanKeAhass || 'N/A'}</TableCell>
-                <TableCell>{data.alamat || 'N/A'}</TableCell>
+                <TableCell>{data.namaPemilik || "N/A"}</TableCell>
+                <TableCell>{data.typeMotor || "N/A"}</TableCell>
+                <TableCell>{data.platNumber || "N/A"}</TableCell>
+                <TableCell>{data.alasanKeAhass || "N/A"}</TableCell>
+                <TableCell>{data.alamat || "N/A"}</TableCell>
               </TableRow>
             ))
           ) : (
@@ -47,8 +55,16 @@ const TablePkb: React.FC = () => {
           )}
         </TableBody>
       </Table>
-      <div className='flex justify-end'>
-          <Button type='button' color='success' className={`mt-5 mx-10 text-xl ${importExcel.length == 0 ? 'hidden' : ''}`} variant={'solid'} onPress={submit}>Upload Data</Button>
+      <div className="flex justify-end">
+        <Button
+          className={`mt-5 mx-10 text-xl ${importExcel.length == 0 ? "hidden" : ""}`}
+          color="success"
+          type="button"
+          variant={"solid"}
+          onPress={submit}
+        >
+          Upload Data
+        </Button>
       </div>
     </div>
   );

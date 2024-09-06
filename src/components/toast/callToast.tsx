@@ -7,7 +7,6 @@ export const callToastLoading = (id: string) => {
 };
 
 export const notify = () => {
-  console.log("notify");
   // toast.loading("Logging in...",{
   //   toastId: "loading",
   // });
