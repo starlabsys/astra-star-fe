@@ -14,6 +14,7 @@ export const loginLoading = async (path: string, body: Record<string, any>) => {
 
   callToastDone(date.getTime().toString());
 
+  // console.log(resp);
   if (resp === null) {
     callToastError("Invalid username or password");
 
@@ -23,3 +24,20 @@ export const loginLoading = async (path: string, body: Record<string, any>) => {
 
   return resp;
 };
+
+
+export const postData = async (path: string, body: Record<string, any>) => {
+  const resp = await post(path, body);
+
+
+  console.log("response on postData", resp);
+  console.log(resp);
+  if (resp === null) {
+    callToastError(resp.message);
+
+    return null;
+  }
+  callToastSuccess(resp.message);
+
+  return resp;
+}

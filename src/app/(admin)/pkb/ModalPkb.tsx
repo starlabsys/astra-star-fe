@@ -2,15 +2,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from '@nextui-org/react';
 import { toast } from 'react-toastify';
-import usePkbService from '@/src/module/admin/pkb/pkbService';
+import { usePkbService } from '@/src/module/admin/pkb/pkbService';
+// import usePkbService from '@/src/module/admin/pkb/pkbService';
 
-interface ModalPkbProps {
-  isOpen: boolean;
-  onOpenChange: () => void;
-}
-
-const ModalPkb: React.FC<ModalPkbProps> = ({ isOpen, onOpenChange }) => {
-  const { importExcel, importXlsx } = usePkbService();
+const ModalPkb: React.FC<{ isOpen: boolean; onOpenChange: () => void; }> = ({ isOpen, onOpenChange }) => {
+  const { importXlsx } = usePkbService();
   const [fileExcel, setFileExcel] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -22,7 +18,7 @@ const ModalPkb: React.FC<ModalPkbProps> = ({ isOpen, onOpenChange }) => {
           setFileExcel(null); // Clear file after import
           onOpenChange(); // Optionally close the modal
         })
-        .catch((error) => {
+        .catch((error:any) => {
           toast.error('Error importing file');
         });
     }
@@ -34,12 +30,12 @@ const ModalPkb: React.FC<ModalPkbProps> = ({ isOpen, onOpenChange }) => {
     }
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const fileExtension = file.name.split('.').pop();
       if (fileExtension === 'xlsx') {
-        setFileExcel(file);
+        setFileExcel(file); // Set the selected file
       } else {
         toast.error('Please select an xlsx file');
       }

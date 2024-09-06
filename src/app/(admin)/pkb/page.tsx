@@ -4,7 +4,7 @@ import { Button } from '@nextui-org/button'
 import React, { useState } from 'react'
 import TablePkb from './TablePkb'
 import ModalPkb from './ModalPkb'
-import PkbService from '@/src/module/admin/pkb/pkbService';
+import { PkbProvider, usePkbContext } from './PkbContext';
 
 const page: React.FC = () => {
     const [isModalOpen, setModalOpen] = useState(false);
@@ -18,15 +18,19 @@ const page: React.FC = () => {
         setModalOpen(false);
     };
   return (
-    <div className="w-full flex flex-col px-7 py-2 gap-4">
-        <div className='flex justify-end py-2 px-4'>
-            <Button type='button' color='primary' className={`text-xl`} variant={'solid'} onPress={handleOpenModal}>Upload File Excel</Button>
+    <>
+    <PkbProvider>
+        <div className="w-full flex flex-col px-7 py-2 gap-4">
+            <div className='flex justify-end py-2 px-4'>
+                <Button type='button' color='primary' className={`text-xl`} variant={'solid'} onPress={handleOpenModal}>Upload File Excel</Button>
+            </div>
+            <div>
+                <TablePkb />
+            </div>
+            <ModalPkb isOpen={isModalOpen} onOpenChange={handleCloseModal} />
         </div>
-        <div>
-            <TablePkb />
-        </div>
-        <ModalPkb isOpen={isModalOpen} onOpenChange={handleCloseModal} />
-    </div>
+    </PkbProvider>
+    </>
 
   )
 }

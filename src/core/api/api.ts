@@ -38,23 +38,36 @@ const fetchData = async (
   })
     .then((res) => {
       if (res.status == 200 || res.status == 201) {
+        // console.log("RESPONSE 200 || 201");
+        // console.log(res);
+
         // toast.done(date.getTime().toString());
         // toast.success("Logged in successfully!");
 
         return res.json();
       } else if (res.status == 400) {
+        // console.log("RESPONSE 400");
+
+        // console.log(res);
+
         // toast.done(date.getTime().toString());
         // toast.error("Invalid username or password");
 
         return null;
       } else {
+        console.log("RESPONSE ERROR");
+
         // toast.done(date.getTime().toString());
         // toast.error("An error occurred");
+        // console.log(res);
 
         throw new Error("Network response was not ok");
       }
     })
     .catch((error) => {
+      // console.log("RESPONSE CATCH ERROR");
+
+      // console.log(error);
       console.error(
         "There has been a problem with your fetch operation:",
         error,
