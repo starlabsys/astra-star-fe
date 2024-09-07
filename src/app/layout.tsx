@@ -8,6 +8,7 @@ import { Providers } from "./providers";
 import { siteConfig } from "@/src/config/site";
 import { fontSans } from "@/src/config/fonts";
 import ToastProvider from "@/src/components/toast/toastProvider";
+import { HistoryProvider } from "./(admin)/history-pkb/HistoryProvider";
 
 export const metadata: Metadata = {
   title: {
