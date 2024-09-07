@@ -1,8 +1,8 @@
-import { postData } from "@/src/core/api/baseApi";
+import { post } from "@/src/core/api/baseApi";
 import { ConvertPkb, SuccessPkb } from "@/src/model/modelPkb";
 
 export const uploadExcel = async (data: any): Promise<SuccessPkb | null> => {
-  const resp = postData("/upload-data-controller/upload", {
+  const resp = post("/upload-data-controller/upload", {
     tokenAntrian: data.tokenAntrian,
     tokenWork: data.tokenWork,
     jsonData: data.jsonData,

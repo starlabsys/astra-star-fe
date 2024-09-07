@@ -1,11 +1,16 @@
-"use client";
-
 import Image from "next/image";
 
 import LoginService from "@/src/module/auth/login/loginService";
+import { Input } from "@nextui-org/input";
 
 export const LoginView = () => {
-  const { submit } = LoginService();
+  const {
+    username,
+    setUsername,
+    password,
+    setPassword,
+    submit,
+  } = LoginService();
 
   return (
     <div className="grid grid-cols-2">
@@ -23,26 +28,30 @@ export const LoginView = () => {
             <div className="text-xl font-bold text-gray-500 text-center">
               Masukkan Username dan Password yang telah terdaftar
             </div>
-            <form className="flex flex-col">
-              <input
-                className="border-2 border-gray-500 rounded-md p-2 mt-4"
-                placeholder="Username"
+            <div className="flex flex-col">
+              <Input 
+                label="Username" 
+                className="my-2" 
                 type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
-              <input
-                className="border-2 border-gray-500 rounded-md p-2 mt-4"
-                placeholder="Password"
+              <Input 
+                label="Password" 
+                className="my-2" 
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <div className="flex justify-center">
                 <button
                   className="w-1/3 bg-blue-400 text-white rounded-md p-2 mt-2"
-                  type="submit"
+                  onClick={()=> submit()}
                 >
                   Login
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
