@@ -19,9 +19,9 @@ export const post = async (path: string, body: Record<string, any>) => {
   // callToastLoading(date.getTime().toString());
   const resp = await postFetchData(path, body);
 
-  console.log('Response BaseApi', resp);
+  // console.log('Response BaseApi', resp);
 
-  callToastDone(resp.message);
+  // callToastDone(resp.message);
 
   if (resp.data === null) {
     callToastError(resp.message);

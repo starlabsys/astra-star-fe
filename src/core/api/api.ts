@@ -23,9 +23,7 @@ enum Method {
 const cookieStore = cookies();
 
 const header = async (): Promise<HeadersInit | undefined> => {
-  const token = cookieStore.get("token");
-
-  console.log("Header Token", token);
+  const token = await cookieStore.get("token");
 
   return {
     Authorization: `Bearer ${token?.value}`,
@@ -123,11 +121,11 @@ const fetchData = async (
       if (res.status === 200 || res.status === 201) {
         console.debug("response body", respJson);
 
-        if (respJson.token !== null) {
-          cookieStore.set("token", respJson.token, {
-            expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-          });
-        }
+        // if (respJson.token !== null) {
+        //   cookieStore.set("token", respJson.token, {
+        //     expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+        //   });
+        // }
 
         return {
           message: respJson.message ?? "Success",
@@ -173,7 +171,6 @@ export const getFetchData = async (
 ): Promise<ReturnResult> => {
   const resp = await fetchData(path, body, Method.GET);
 
-  console.log("response", resp);
   return {
     data: resp.data.result,
     message: resp.message,
@@ -230,10 +227,10 @@ export const postFetchLogin = async (
   const resp = await fetchData(path, body, Method.POST);
 
   if(resp.data !== null){
-    console.log("response", resp.data);
+    // console.log("response", resp.data);
     if(resp.data.result !== null){
       const token = resp.data.result.token;
-      console.log("Token Set to Cookie", token);
+      // console.log("Token Set to Cookie", token);
       cookieStore.set("token", token, {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
       });

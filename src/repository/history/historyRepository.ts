@@ -1,13 +1,11 @@
 import { post } from "@/src/core/api/baseApi";
-import { ConvertModelHistory } from "@/src/model/modelHistory";
+import { ConvertModelHistory, ModelHistory } from "@/src/model/modelHistory";
 
-export const getDataHistory = async ():Promise<any> => {
+export const getDataHistory = async ():Promise<ModelHistory | null> => {
     const resp = await post('/history', {
         limit: 10,
         skip: 0
     });
-
-    console.log('Response History Repository', resp);
 
     if(resp === null){
         return null;

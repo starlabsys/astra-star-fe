@@ -6,43 +6,38 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Link,
 } from "@nextui-org/react";
+import useHistoryService from "./historyService";
+import { ListUUID } from "@/src/model/modelHistory";
 
-const TablePkb = () => {
+const TablePkb: React.FC = () => {
+  const { listHistory } = useHistoryService();
+
   return (
     <>
       <Table aria-label="Example static collection table">
         <TableHeader>
-          <TableColumn>Nama Pemilik</TableColumn>
-          <TableColumn>Tipe Kendaraan</TableColumn>
-          <TableColumn>Plat Nomor</TableColumn>
-          <TableColumn>Status</TableColumn>
+          <TableColumn>UUID Upload</TableColumn>
+          <TableColumn>Tanggal Upload</TableColumn>
+          <TableColumn>Total Data</TableColumn>
+          <TableColumn>Sukses Upload</TableColumn>
+          <TableColumn>Aksi</TableColumn>
         </TableHeader>
         <TableBody>
-          <TableRow key="1">
-            <TableCell>Tony Reichert</TableCell>
-            <TableCell>Matic</TableCell>
-            <TableCell>KB 1123 HF</TableCell>
-            <TableCell>Active</TableCell>
-          </TableRow>
-          <TableRow key="2">
-            <TableCell>Zoey Lang</TableCell>
-            <TableCell>Manual</TableCell>
-            <TableCell>KB 1123 HF</TableCell>
-            <TableCell>Paused</TableCell>
-          </TableRow>
-          <TableRow key="3">
-            <TableCell>Jane Fisher</TableCell>
-            <TableCell>Manual</TableCell>
-            <TableCell>KB 1123 HF</TableCell>
-            <TableCell>Active</TableCell>
-          </TableRow>
-          <TableRow key="4">
-            <TableCell>William Howard</TableCell>
-            <TableCell>Matic</TableCell>
-            <TableCell>KB 1123 HF</TableCell>
-            <TableCell>Vacation</TableCell>
-          </TableRow>
+          {(listHistory ?? []).map((item: ListUUID, index: number) => (
+            <TableRow key={index}>
+              <TableCell>{item.uuid}</TableCell>
+              <TableCell>{item.createdAt}</TableCell>
+              <TableCell>{item.totalData}</TableCell>
+              <TableCell>{item.totalDataSuccess}</TableCell>
+              <TableCell>
+                <Link color="primary" href={`/admin/history/${item.uuid}`}>
+                  Detail
+                </Link>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </>
