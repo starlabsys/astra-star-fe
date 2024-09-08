@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import LoginService from "@/src/module/auth/login/loginService";
 import { Input } from "@nextui-org/input";
+import { Button } from "@nextui-org/button";
 
 export const LoginView = () => {
   const {
@@ -10,6 +11,8 @@ export const LoginView = () => {
     password,
     setPassword,
     submit,
+    isLoading,
+    setIsLoading
   } = LoginService();
 
   return (
@@ -44,12 +47,22 @@ export const LoginView = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div className="flex justify-center">
-                <button
+                {/* <button
                   className="w-1/3 bg-blue-400 text-white rounded-md p-2 mt-2"
+
                   onClick={()=> submit()}
                 >
                   Login
-                </button>
+                </button> */}
+                <Button
+                  className="w-1/3 mt-2"
+                  color="primary"
+                  isLoading={isLoading}
+                  variant="ghost"
+                  onClick={()=> submit()}
+                >
+                  Login
+                </Button>
               </div>
             </div>
           </div>
