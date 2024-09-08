@@ -1,13 +1,24 @@
 import { Link } from '@nextui-org/link';
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/table';
-import React from 'react';
+import React, { useState } from 'react';
 import { ListDatum } from '@/src/model/modelDetailHistory';
+import ModalDetailHistory from './modalDetailHistory';
+import { Button } from '@nextui-org/button';
+import { useDisclosure } from '@nextui-org/react';
 
 interface DetailTablePkbProps {
     data: ListDatum[];
 }
 
 const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data }) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [selectedItem, setSelectedItem] = useState<ListDatum | null>(null); // Initialize with null
+
+    const handleOpen = (item: ListDatum) => {
+        setSelectedItem(item);  // Set the selected item
+        onOpen(); // Open the modal
+    };
+
     return (
         <>
             <Table aria-label="Detail History Table">
@@ -20,39 +31,38 @@ const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data }) => {
                     <TableColumn>Aksi</TableColumn>
                 </TableHeader>
                 <TableBody>
-                    {data.map((item:ListDatum, index:number) =>(
+                    {data.map((item: ListDatum, index: number) => (
                         <TableRow key={index}>
                             <TableCell>{item.namaPemilik}</TableCell>
                             <TableCell>{item.platNumber}</TableCell>
                             <TableCell>{item.typeMotor}</TableCell>
                             <TableCell>{item.alamat}</TableCell>
                             <TableCell>
-                                <div className={`${item.status === 'SUCCESS' ? 'text-green-400' : 'text-orange-300'} font-semibold`}>
+                                <div className={`${item.status === 'SUCCESS' ? 'text-green-400 border-1 border-green-600' : 'text-orange-300 border-1 border-orange-600'} text-center w-1/3 rounded-lg p-2 font-semibold`}>
                                     {item.status}
                                 </div>
                             </TableCell>
                             <TableCell>
-                                <Link color="primary" href="#">
-                                    Detail Data
-                                </Link>
+                                <Button
+                                    variant="flat"
+                                    color="warning"
+                                    onPress={() => handleOpen(item)} // Pass item to handleOpen
+                                    className="capitalize"
+                                >
+                                    Detail
+                                </Button>
                             </TableCell>
                         </TableRow>
                     ))}
-                    {/* {data.map((item, index) => (
-                        <TableRow key={index}>
-                            <TableCell>{item.id}</TableCell>
-                            <TableCell>{item.createdAt}</TableCell>
-                            <TableCell>{item.totalData ?? 0}</TableCell>
-                            <TableCell>{item.totalDataSuccess ?? 0}</TableCell>
-                            <TableCell>
-                                <Link color="primary" href={`/history-pkb/${item.id}`}>
-                                    Detail
-                                </Link>
-                            </TableCell>
-                        </TableRow>
-                    ))} */}
                 </TableBody>
             </Table>
+            {selectedItem && ( // Ensure selectedItem is not null before rendering the modal
+                <ModalDetailHistory 
+                    isOpen={isOpen} 
+                    onClose={onClose} 
+                    item={selectedItem} // Pass the selected item to the modal
+                />
+            )}
         </>
     );
 };

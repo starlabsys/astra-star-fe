@@ -1,10 +1,13 @@
 "use client";
 import { ListDatum } from "@/src/model/modelDetailHistory";
 import { getDataDetailHistory } from "@/src/repository/history/historyRepository";
+import { useDisclosure } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
 const useDetailHistoryService = (uuid: string) => {
     const [listDetailHistory, setListDetailHistory] = useState<ListDatum[]>([]);
+    const {isOpen, onOpen, onClose} = useDisclosure()
+
 
     const fetchDetailHistory = async (uuid: string) => {
         const resp = await getDataDetailHistory(uuid);
@@ -24,6 +27,9 @@ const useDetailHistoryService = (uuid: string) => {
 
     return {
         listDetailHistory,
+        isOpen,
+        onOpen,
+        onClose
     };
 };
 
