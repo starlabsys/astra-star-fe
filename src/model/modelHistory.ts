@@ -5,29 +5,29 @@
 //   const modelHistory = Convert.toModelHistory(json);
 
 export interface ModelHistory {
-    errorCode: string;
-    message:   string;
-    result:    Result;
+  errorCode: string;
+  message: string;
+  result: Result;
 }
 
 export interface Result {
-    listUUID: ListUUID[];
+  listUUID: ListUUID[];
 }
 
 export interface ListUUID {
-    uuid:             string;
-    totalDataSuccess: number;
-    createdAt:        string;
-    totalData:        number;
+  uuid: string;
+  totalDataSuccess: number;
+  createdAt: string;
+  totalData: number;
 }
 
 // Converts JSON strings to/from your types
 export class ConvertModelHistory {
-    public static toModelHistory(json: string): ModelHistory {
-        return JSON.parse(json);
-    }
+  public static toModelHistory(json: string): ModelHistory {
+    return JSON.parse(json);
+  }
 
-    public static modelHistoryToJson(value: ModelHistory): string {
-        return JSON.stringify(value);
-    }
+  public static modelHistoryToJson(value: ModelHistory): string {
+    return JSON.stringify(value);
+  }
 }

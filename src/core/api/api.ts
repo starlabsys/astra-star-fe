@@ -95,8 +95,6 @@ const fetchData = async (
   const base = `${baseUrl()}${path}`;
   const headers = await header();
 
-  console.log("Fetch Data Header", headers);
-
   console.debug("fetching data from", base);
   console.debug("headers", headers);
   console.debug("method", method);
@@ -134,7 +132,7 @@ const fetchData = async (
         };
       } else if (res.status === 400) {
         throw new ErrorData(respJson.message, res.status);
-      } else if (res.status === 404){
+      } else if (res.status === 404) {
         throw new ErrorData(respJson.message, 404);
       } else {
         throw new ErrorData("Network response was not ok", 500);
@@ -155,7 +153,6 @@ export const postFetchData = async (
   path: string,
   body: Record<string, any>,
 ): Promise<ReturnResult> => {
-
   const resp = await fetchData(path, body, Method.POST);
 
   return {
@@ -226,10 +223,11 @@ export const postFetchLogin = async (
 ): Promise<ReturnResult> => {
   const resp = await fetchData(path, body, Method.POST);
 
-  if(resp.data !== null){
+  if (resp.data !== null) {
     // console.log("response", resp.data);
-    if(resp.data.result !== null){
+    if (resp.data.result !== null) {
       const token = resp.data.result.token;
+
       // console.log("Token Set to Cookie", token);
       cookieStore.set("token", token, {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
@@ -242,4 +240,4 @@ export const postFetchLogin = async (
     message: resp.message,
     statusCode: resp.statusCode,
   };
-}
+};

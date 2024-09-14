@@ -38,7 +38,6 @@ export const postLogin = async (path: string, body: Record<string, any>) => {
   // callToastLoading(date.getTime().toString());
   const resp = await postFetchLogin(path, body);
 
-
   callToastDone(resp.message);
 
   if (resp.data === null) {

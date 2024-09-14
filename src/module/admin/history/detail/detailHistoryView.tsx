@@ -1,9 +1,11 @@
 "use client"; // Ensure this is at the top to mark the file as client-side
 
-import React from 'react';
-import DetailTablePkb from './detailTablePkb';
-import { useHistoryContext } from '@/src/app/(admin)/history-pkb/HistoryProvider';
-import useDetailHistoryService from './detailHistoryService';
+import React from "react";
+
+import DetailTablePkb from "./detailTablePkb";
+import useDetailHistoryService from "./detailHistoryService";
+
+import { useHistoryContext } from "@/src/app/(admin)/history-pkb/HistoryProvider";
 
 const DetailHistoryView = () => {
   const { selectedUuid } = useHistoryContext(); // Get the uuid from context

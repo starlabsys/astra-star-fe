@@ -11,15 +11,15 @@ import {
 } from "@nextui-org/react";
 
 import { usePkbContext } from "./PkbContext";
+import ModalDetailPkb from "./ModalDetailPkb";
 
 import { PkbData, usePkbService } from "@/src/module/admin/pkb/pkbService";
-import ModalDetailPkb from "./ModalDetailPkb";
 
 const TablePkb: React.FC = () => {
   const { importExcel } = usePkbContext(); // Correctly use the context
   const { uploadData } = usePkbService();
 
-  const {isOpen, onOpen, onClose} = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedItem, setSelectedItem] = useState<PkbData | null>(null);
 
   const submit = async () => {
@@ -31,7 +31,7 @@ const TablePkb: React.FC = () => {
   const handleOpen = (item: PkbData) => {
     setSelectedItem(item);
     onOpen();
-  }
+  };
 
   return (
     <div>
@@ -55,12 +55,12 @@ const TablePkb: React.FC = () => {
                 <TableCell>{data.alamat || "N/A"}</TableCell>
                 <TableCell>
                   <Button
-                    variant="flat"
+                    className="capitalize"
                     color="warning"
+                    variant="flat"
                     onPress={() => {
                       handleOpen(data);
                     }}
-                    className="capitalize"
                   >
                     Detail
                   </Button>
@@ -90,7 +90,11 @@ const TablePkb: React.FC = () => {
           Upload Data
         </Button>
         {selectedItem && (
-          <ModalDetailPkb isOpen={isOpen} item={selectedItem} onClose={onClose} />
+          <ModalDetailPkb
+            isOpen={isOpen}
+            item={selectedItem}
+            onClose={onClose}
+          />
         )}
       </div>
     </div>

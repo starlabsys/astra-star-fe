@@ -6,28 +6,28 @@
 
 export interface ModelUser {
   errorCode: string;
-  message:   string;
-  result:    Result;
+  message: string;
+  result: Result;
 }
 
 export interface Result {
   token: string;
-  user:  User;
+  user: User;
 }
 
 export interface User {
   username: string;
-  name:     string;
-  id:       number;
+  name: string;
+  id: number;
 }
 
 // Converts JSON strings to/from your types
 export class ConvertModelUser {
   public static toModelUser(json: string): ModelUser {
-      return JSON.parse(json);
+    return JSON.parse(json);
   }
 
   public static modelUserToJson(value: ModelUser): string {
-      return JSON.stringify(value);
+    return JSON.stringify(value);
   }
 }

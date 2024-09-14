@@ -19,7 +19,6 @@ const LoginService = () => {
       // Redirect to /dashboard after successful login
       router.push("/dashboard");
     }
-    
   };
 
   return {

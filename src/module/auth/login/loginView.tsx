@@ -1,8 +1,8 @@
 import Image from "next/image";
-
-import LoginService from "@/src/module/auth/login/loginService";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
+
+import LoginService from "@/src/module/auth/login/loginService";
 
 export const LoginView = () => {
   const {
@@ -12,7 +12,7 @@ export const LoginView = () => {
     setPassword,
     submit,
     isLoading,
-    setIsLoading
+    setIsLoading,
   } = LoginService();
 
   return (
@@ -32,16 +32,16 @@ export const LoginView = () => {
               Masukkan Username dan Password yang telah terdaftar
             </div>
             <div className="flex flex-col">
-              <Input 
-                label="Username" 
-                className="my-2" 
+              <Input
+                className="my-2"
+                label="Username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
-              <Input 
-                label="Password" 
-                className="my-2" 
+              <Input
+                className="my-2"
+                label="Password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -59,7 +59,7 @@ export const LoginView = () => {
                   color="primary"
                   isLoading={isLoading}
                   variant="ghost"
-                  onClick={()=> submit()}
+                  onClick={() => submit()}
                 >
                   Login
                 </Button>

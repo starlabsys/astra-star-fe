@@ -47,7 +47,7 @@ export default function withAuth(
 
     // Check if the pathName starts with any of the protected routes
     const isProtectedRoute = requireAuth.some((route) =>
-      pathName.startsWith(route)
+      pathName.startsWith(route),
     );
 
     if (isProtectedRoute) {

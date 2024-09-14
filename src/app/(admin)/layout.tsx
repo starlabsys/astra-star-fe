@@ -1,8 +1,9 @@
 import React from "react";
 
+import { HistoryProvider } from "./history-pkb/HistoryProvider";
+
 import NavbarNavigation from "@/src/components/NavbarNavigation";
 import SidebarNavigation from "@/src/components/SidebarNavigation";
-import { HistoryProvider } from "./history-pkb/HistoryProvider";
 
 export default function DashboardLayout({
   children,

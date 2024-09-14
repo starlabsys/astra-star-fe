@@ -8,17 +8,18 @@ import {
   TableCell,
   Button,
 } from "@nextui-org/react";
-import useHistoryService from "./historyService";
-import { useHistoryContext } from "@/src/app/(admin)/history-pkb/HistoryProvider";
 import Link from "next/link";
+
+import useHistoryService from "./historyService";
+
+import { useHistoryContext } from "@/src/app/(admin)/history-pkb/HistoryProvider";
 
 const TablePkb: React.FC = () => {
   const { listHistory } = useHistoryService();
   const { setSelectedUuid } = useHistoryContext(); // Get setUuid function from context
 
-  const handleOrderClick = (item:any) => {
-    setSelectedUuid(item); // Correctly pass the object of UuidProps type
-    console.log("Item saved to context:", item); // Debugging log
+  const handleOrderClick = (item: any) => {
+    setSelectedUuid(item); // Correctly pass the object of UuidPr
     // console.log(uuid);
   };
 
@@ -39,17 +40,15 @@ const TablePkb: React.FC = () => {
             <TableCell>{item.totalData}</TableCell>
             <TableCell>{item.totalDataSuccess}</TableCell>
             <TableCell>
-                <Button 
-                  className='mt-10' 
-                  color='default' 
-                  size='lg' 
-                  variant='bordered'
-                  onClick={() => handleOrderClick(item)} // Handle the click event
-                >
-                  <Link href='/history-pkb/detail'>
-                    Pesan Sekarang
-                  </Link>
-                </Button>
+              <Button
+                className="mt-10"
+                color="default"
+                size="lg"
+                variant="bordered"
+                onClick={() => handleOrderClick(item)} // Handle the click event
+              >
+                <Link href="/history-pkb/detail">Pesan Sekarang</Link>
+              </Button>
             </TableCell>
           </TableRow>
         ))}
