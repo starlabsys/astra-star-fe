@@ -1,14 +1,10 @@
 "use client";
 import React from "react";
 
-import TablePkb from "./TablePkb";
+import HistoryView from "@/src/module/admin/history/historyView";
 
-const page = () => {
-  return (
-    <div className="w-full flex flex-col px-7 py-2 gap-4">
-      <TablePkb />
-    </div>
-  );
+const page: React.FC = () => {
+  return <HistoryView />;
 };
 
 export default page;

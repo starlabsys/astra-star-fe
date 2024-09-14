@@ -2,9 +2,9 @@ name: Next.js CI/CD
 
 on:
   push:
-    branches: [ dev ] # Mengubah branch target menjadi main atau sesuaikan dengan branch yang Anda gunakan
+    branches: [ prod ] # Mengubah branch target menjadi main atau sesuaikan dengan branch yang Anda gunakan
   pull_request:
-    branches: [ dev ]
+    branches: [ prod ]
 
 jobs:
   build:
@@ -32,8 +32,8 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build . -t ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${IMAGE_TAG}
-          docker push ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${IMAGE_TAG}
+          docker build . -t ${{ secrets.DOCKER_USERNAME }}/fe-komik:${IMAGE_TAG}
+          docker push ${{ secrets.DOCKER_USERNAME }}/fe-komik:${IMAGE_TAG}
 
   deploy:
     needs: build
@@ -46,8 +46,8 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${{ github.sha }}
-            docker stop astra-star-fe || true
-            docker rm astra-star-fe || true
+            docker pull ${{ secrets.DOCKER_USERNAME }}/fe-komik:${{ github.sha }}
+            docker stop fe-komik || true
+            docker rm fe-komik || true
             # Menggunakan port 8085 untuk aplikasi Next.js
-            docker run -d --name astra-star-fe -p 8086:8086 -v /root/astra-star-fe/.env:/home/node/app/.env ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${{ github.sha }}
+            docker run -d --name fe-komik -p 8087:8087 -v /root/fe-komik/.env:/home/node/app/.env ${{ secrets.DOCKER_USERNAME }}/fe-komik:${{ github.sha }}
