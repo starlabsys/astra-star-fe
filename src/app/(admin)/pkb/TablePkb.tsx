@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableHeader,
@@ -7,21 +7,31 @@ import {
   TableRow,
   TableCell,
   Button,
+  useDisclosure,
 } from "@nextui-org/react";
 
 import { usePkbContext } from "./PkbContext";
 
 import { PkbData, usePkbService } from "@/src/module/admin/pkb/pkbService";
+import ModalDetailPkb from "./ModalDetailPkb";
 
 const TablePkb: React.FC = () => {
   const { importExcel } = usePkbContext(); // Correctly use the context
   const { uploadData } = usePkbService();
+
+  const {isOpen, onOpen, onClose} = useDisclosure();
+  const [selectedItem, setSelectedItem] = useState<PkbData | null>(null);
 
   const submit = async () => {
     let dataExcel: PkbData[] = importExcel;
 
     await uploadData(dataExcel);
   };
+
+  const handleOpen = (item: PkbData) => {
+    setSelectedItem(item);
+    onOpen();
+  }
 
   return (
     <div>
@@ -32,6 +42,7 @@ const TablePkb: React.FC = () => {
           <TableColumn>Plat Nomor</TableColumn>
           <TableColumn>Alasan Ke Ahass</TableColumn>
           <TableColumn>Alamat</TableColumn>
+          <TableColumn>Aksi</TableColumn>
         </TableHeader>
         <TableBody>
           {importExcel.length > 0 ? (
@@ -42,10 +53,23 @@ const TablePkb: React.FC = () => {
                 <TableCell>{data.platNumber || "N/A"}</TableCell>
                 <TableCell>{data.alasanKeAhass || "N/A"}</TableCell>
                 <TableCell>{data.alamat || "N/A"}</TableCell>
+                <TableCell>
+                  <Button
+                    variant="flat"
+                    color="warning"
+                    onPress={() => {
+                      handleOpen(data);
+                    }}
+                    className="capitalize"
+                  >
+                    Detail
+                  </Button>
+                </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
+              <TableCell>No data available</TableCell>
               <TableCell>No data available</TableCell>
               <TableCell>No data available</TableCell>
               <TableCell>No data available</TableCell>
@@ -65,6 +89,9 @@ const TablePkb: React.FC = () => {
         >
           Upload Data
         </Button>
+        {selectedItem && (
+          <ModalDetailPkb isOpen={isOpen} item={selectedItem} onClose={onClose} />
+        )}
       </div>
     </div>
   );
