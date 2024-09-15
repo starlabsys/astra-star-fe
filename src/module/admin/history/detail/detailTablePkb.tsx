@@ -16,11 +16,14 @@ import { ListDetailHistoryPkb } from "@/src/model/modelDetailHistory";
 
 interface DetailTablePkbProps {
   data: ListDetailHistoryPkb[];
+  uuid: string;
 }
 
-const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data }) => {
+const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data, uuid }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedItem, setSelectedItem] = useState<ListDetailHistoryPkb | null>(null); // Initialize with null
+  const [selectedItem, setSelectedItem] = useState<ListDetailHistoryPkb | null>(
+    null,
+  ); // Initialize with null
 
   const handleOpen = (item: ListDetailHistoryPkb) => {
     setSelectedItem(item); // Set the selected item
@@ -70,6 +73,7 @@ const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data }) => {
         <ModalDetailHistory
           isOpen={isOpen}
           item={selectedItem} // Pass the selected item to the modal
+          uuid={uuid}
           onClose={onClose}
         />
       )}

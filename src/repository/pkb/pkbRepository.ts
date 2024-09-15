@@ -13,3 +13,17 @@ export const uploadExcel = async (data: any): Promise<SuccessPkb | null> => {
   //   console.log(resp);
   return ConvertPkb.toSuccessPkb(JSON.stringify(resp));
 };
+export const uploadDetailExcel = async (
+  data: any,
+): Promise<SuccessPkb | null> => {
+  const resp = post("/upload-data-controller/upload", {
+    jsonData: data,
+  });
+
+  if (resp === null) {
+    return null;
+  }
+
+  //   console.log(resp);
+  return ConvertPkb.toSuccessPkb(JSON.stringify(resp));
+};
