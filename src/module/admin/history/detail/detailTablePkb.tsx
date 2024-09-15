@@ -12,17 +12,20 @@ import { useDisclosure } from "@nextui-org/react";
 
 import ModalDetailHistory from "./modalDetailHistory";
 
-import { ListDatum } from "@/src/model/modelDetailHistory";
+import { ListDetailHistoryPkb } from "@/src/model/modelDetailHistory";
 
 interface DetailTablePkbProps {
-  data: ListDatum[];
+  data: ListDetailHistoryPkb[];
+  uuid: string;
 }
 
-const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data }) => {
+const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data, uuid }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedItem, setSelectedItem] = useState<ListDatum | null>(null); // Initialize with null
+  const [selectedItem, setSelectedItem] = useState<ListDetailHistoryPkb | null>(
+    null,
+  ); // Initialize with null
 
-  const handleOpen = (item: ListDatum) => {
+  const handleOpen = (item: ListDetailHistoryPkb) => {
     setSelectedItem(item); // Set the selected item
     onOpen(); // Open the modal
   };
@@ -39,7 +42,7 @@ const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data }) => {
           <TableColumn>Aksi</TableColumn>
         </TableHeader>
         <TableBody>
-          {data.map((item: ListDatum, index: number) => (
+          {data.map((item: ListDetailHistoryPkb, index: number) => (
             <TableRow key={index}>
               <TableCell>{item.namaPemilik}</TableCell>
               <TableCell>{item.platNumber}</TableCell>
@@ -70,6 +73,7 @@ const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data }) => {
         <ModalDetailHistory
           isOpen={isOpen}
           item={selectedItem} // Pass the selected item to the modal
+          uuid={uuid}
           onClose={onClose}
         />
       )}

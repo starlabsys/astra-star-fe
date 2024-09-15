@@ -177,6 +177,26 @@ export const getFetchData = async (
     // statusCode: 201,
   };
 };
+export const getFetchDataOnly = async (
+  path: string,
+  body: Record<string, any>,
+): Promise<any> => {
+  const resp = await fetchData(path, body, Method.GET);
+
+  return {
+    data: resp,
+  };
+};
+export const putFetchDataOnly = async (
+  path: string,
+  body: Record<string, any>,
+): Promise<any> => {
+  const resp = await fetchData(path, body, Method.PUT);
+
+  return {
+    data: resp,
+  };
+};
 
 export const putFetchData = async (
   path: string,

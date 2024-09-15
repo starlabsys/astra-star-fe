@@ -1,4 +1,5 @@
 export interface JSONDataPkb {
+  id?: string;
   tglBeli: string;
   namaPemilik: string;
   kmAkhirMotor: number;
