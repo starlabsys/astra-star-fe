@@ -50,7 +50,7 @@ const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data, uuid }) => {
               <TableCell>{item.alamat}</TableCell>
               <TableCell>
                 <div
-                  className={`${item.status === "SUCCESS" ? "text-green-400 border-1 border-green-600" : "text-orange-300 border-1 border-orange-600"} text-center w-1/3 rounded-lg p-2 font-semibold`}
+                  className={`${item.status === "SUCCESS" ? "text-green-400 border-1 border-green-600" : "text-orange-300 border-1 border-orange-600"} text-center w-32 rounded-lg p-2 font-semibold`}
                 >
                   {item.status}
                 </div>
