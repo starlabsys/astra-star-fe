@@ -144,26 +144,36 @@ export const usePkbService = () => {
       // let splitDataSukuCadang = data[i].sukuCadang
       //   ? data[i].sukuCadang.split("|")
       //   : [];
-      let splitDataSukuCadang = data[i].sukuCadang.split("|");
-      let splitDataQtySukuCadang = data[i].qty.split("|");
-
       let listSukuCadang = [];
 
-      for (let x = 0; x < splitDataSukuCadang.length; x++) {
-        listSukuCadang.push({
-          name: splitDataSukuCadang[x],
-          qty: Number(splitDataQtySukuCadang[x]),
-        });
-      }
+      if (data[i].sukuCadang !== null) {
+        let splitDataSukuCadang = data[i].sukuCadang.split("|");
+        let splitDataQtySukuCadang = data[i].qty.split("|");
 
-      for (let j = 0; j < splitDataKategori.length; j++) {
-        pekerjaan.push({
-          kategoriPekerjaan: splitDataKategori[j],
-          jenisPekerjaan: splitDataJenis[j],
-          namaPekerjaan: splitDataNama[j],
-          gudang: splitDataGudang[j],
-          sukuCadang: listSukuCadang,
-        });
+        for (let j = 0; j < splitDataKategori.length; j++) {
+          pekerjaan.push({
+            kategoriPekerjaan: splitDataKategori[j],
+            jenisPekerjaan: splitDataJenis[j],
+            namaPekerjaan: splitDataNama[j],
+            gudang: splitDataGudang[j],
+            sukuCadang: [
+              {
+                name: splitDataSukuCadang[j],
+                qty: Number(splitDataQtySukuCadang[j]),
+              },
+            ],
+          });
+        }
+      } else {
+        for (let j = 0; j < splitDataKategori.length; j++) {
+          pekerjaan.push({
+            kategoriPekerjaan: splitDataKategori[j],
+            jenisPekerjaan: splitDataJenis[j],
+            namaPekerjaan: splitDataNama[j],
+            gudang: splitDataGudang[j],
+            sukuCadang: [],
+          });
+        }
       }
 
       jsonData.push({
@@ -199,7 +209,6 @@ export const usePkbService = () => {
       jsonData: jsonData,
     };
 
-    // console.log("Data Upload", dataUpload);
     const resp = await uploadExcel(dataUpload);
 
     // Example: await axios.post('/api/upload', data);
