@@ -32,7 +32,7 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build . -t ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${IMAGE_TAG}
+          docker build . -t ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${IMAGE_TAG} --build-arg ENV_FILE_PATH=/root/astra-star-fe/.env
           docker push ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${IMAGE_TAG}
 
   deploy:
@@ -50,3 +50,6 @@ jobs:
             docker stop astra-star-fe || true
             docker rm astra-star-fe || true
             docker run -d --name astra-star-fe -p 8086:8086 -v /root/astra-star-fe/.env:/home/node/app/.env ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${{ github.sha }}
+
+      - name: Prune unused Docker images
+        run: docker image prune -a -f
