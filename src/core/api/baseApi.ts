@@ -1,10 +1,12 @@
 import {
   deleteFetchData,
   getFetchData,
+  getFetchDataOnly,
   patchFetchData,
   postFetchData,
   postFetchLogin,
   putFetchData,
+  putFetchDataOnly,
 } from "@/src/core/api/api";
 import {
   callToastDone,
@@ -117,6 +119,33 @@ export const deleted = async (path: string, body: Record<string, any>) => {
     return null;
   }
   callToastSuccess(resp.message);
+
+  return resp.data;
+};
+
+export const getOnly = async (path: string, body: Record<string, any>) => {
+  //
+  const resp = await getFetchDataOnly(path, body);
+
+  if (resp.data === null) {
+    callToastError("Network Error");
+
+    return null;
+  }
+
+  return resp.data;
+};
+
+export const putOnly = async (path: string, body: Record<string, any>) => {
+  const resp = await putFetchDataOnly(path, body);
+
+  if (resp.data === null) {
+    callToastError("Error Put Data");
+
+    return null;
+  }
+
+  callToastSuccess("Sukses Get New Token");
 
   return resp.data;
 };

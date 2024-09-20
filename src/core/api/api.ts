@@ -177,6 +177,26 @@ export const getFetchData = async (
     // statusCode: 201,
   };
 };
+export const getFetchDataOnly = async (
+  path: string,
+  body: Record<string, any>,
+): Promise<any> => {
+  const resp = await fetchData(path, body, Method.GET);
+
+  return {
+    data: resp,
+  };
+};
+export const putFetchDataOnly = async (
+  path: string,
+  body: Record<string, any>,
+): Promise<any> => {
+  const resp = await fetchData(path, body, Method.PUT);
+
+  return {
+    data: resp,
+  };
+};
 
 export const putFetchData = async (
   path: string,
@@ -227,9 +247,16 @@ export const postFetchLogin = async (
     // console.log("response", resp.data);
     if (resp.data.result !== null) {
       const token = resp.data.result.token;
+      const statusToken = resp.data.result.user.statusToken;
+
+      console.log("Statut Token", statusToken);
 
       // console.log("Token Set to Cookie", token);
       cookieStore.set("token", token, {
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      });
+
+      cookieStore.set("status_token", statusToken, {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
       });
     }

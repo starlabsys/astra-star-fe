@@ -18,7 +18,7 @@ const DetailHistoryView = () => {
 
   return (
     <div>
-      <DetailTablePkb data={listDetailHistory} />
+      <DetailTablePkb data={listDetailHistory} uuid={uuid} />
     </div>
   );
 };
