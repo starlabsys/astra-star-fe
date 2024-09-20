@@ -32,7 +32,7 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build . -t ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${IMAGE_TAG} --build-arg ENV_FILE_PATH=/root/astra-star-fe/.env
+          docker build --build-arg ENV_FILE=/root/astra-star-fe/.env . -t ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${IMAGE_TAG}
           docker push ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${IMAGE_TAG}
 
   deploy:
