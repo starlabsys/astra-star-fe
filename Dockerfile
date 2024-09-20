@@ -12,9 +12,13 @@ RUN npm install
 # Menyalin seluruh sumber kode aplikasi Next.js ke dalam container
 COPY . .
 
-# Menyalin .env jika diperlukan saat build (opsional)
-ARG ENV_FILE
-COPY $ENV_FILE ./.env
+# Menggunakan build arguments untuk environment variables
+ARG BASE_URL
+ARG JWT_SECRET
+
+# Menyertakan environment variables dalam build Next.js
+ENV BASE_URL=$BASE_URL
+ENV JWT_SECRET=$JWT_SECRET
 
 # Membangun aplikasi Next.js
 RUN npm run build
