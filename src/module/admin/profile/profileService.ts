@@ -21,6 +21,10 @@ const useProfileService = () => {
 
   const fetchRefreshToken = async (tokenAntrian: string, tokenWork: string) => {
     const resp = await putRefreshNewToken(tokenAntrian, tokenWork);
+
+    if (resp === null) {
+      return null;
+    }
   };
 
   useEffect(() => {

@@ -14,6 +14,7 @@ export default function Home() {
         <h1 className={title()}>Make&nbsp;</h1>
         <h1 className={title({ color: "violet" })}>beautiful&nbsp;</h1>
         <br />
+
         <h1 className={title()}>
           websites regardless of your design experience.
         </h1>

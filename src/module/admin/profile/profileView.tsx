@@ -6,8 +6,7 @@ import { Button, Input } from "@nextui-org/react";
 import useProfileService from "@/src/module/admin/profile/profileService";
 
 const ProfileView = () => {
-  const { profile, setProfile, fetchData, fetchRefreshToken } =
-    useProfileService();
+  const { profile, fetchRefreshToken } = useProfileService();
   const data = {
     id: 9,
     username: "admin",
