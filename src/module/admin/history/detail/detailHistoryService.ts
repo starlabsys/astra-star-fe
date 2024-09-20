@@ -55,6 +55,9 @@ const useDetailHistoryService = (uuid: string) => {
       },
     ];
 
+    console.log("New Detail Item", newDetail);
+    console.log("New Detail Pekerjaan", pekerjaan);
+
     const resp = await uploadDetailExcel(newDetail);
 
     if (resp === null) {

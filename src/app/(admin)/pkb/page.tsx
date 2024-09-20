@@ -1,14 +1,28 @@
 "use client";
 import { Button } from "@nextui-org/button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 import TablePkb from "./TablePkb";
 import ModalPkb from "./ModalPkb";
 import { PkbProvider } from "./PkbContext";
 
-const page: React.FC = () => {
+const page = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [isModalOpen, setModalOpen] = useState(false);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [isToken, setIsToken] = useState(false);
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    const token = Cookies.get("status_token");
+
+    if (token === "IS_ACTIVE") {
+      setIsToken(false);
+    } else {
+      setIsToken(true);
+    }
+  }, []);
 
   const handleOpenModal = () => {
     setModalOpen(true);
@@ -26,6 +40,7 @@ const page: React.FC = () => {
             <Button
               className={`text-xl`}
               color="primary"
+              isDisabled={isToken}
               type="button"
               variant={"solid"}
               onPress={handleOpenModal}

@@ -31,5 +31,10 @@ export interface PekerjaanInterface {
   jenisPekerjaan: string;
   namaPekerjaan: string;
   gudang: string;
-  sukuCadang: string[];
+  sukuCadang: SukuCadang[];
+}
+
+export interface SukuCadang {
+  name: string;
+  qty: number;
 }
