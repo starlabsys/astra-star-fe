@@ -28,7 +28,7 @@ const ModalPkb: React.FC<{ isOpen: boolean; onOpenChange: () => void }> = ({
           onOpenChange(); // Optionally close the modal
         })
         .catch((error: any) => {
-          toast.error("Error importing file");
+          toast.error("Error importing file", error);
         });
     }
   }, [fileExcel, importXlsx, onOpenChange]);

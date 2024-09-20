@@ -56,9 +56,7 @@ export const usePkbService = () => {
     const month = String(date.getMonth() + 1).padStart(2, "0"); // Get month (0-indexed, so add 1) and pad with zero
     const year = date.getFullYear(); // Get full year
 
-    const dateFormatted = `${day}-${month}-${year}`;
-
-    return dateFormatted;
+    return `${day}-${month}-${year}`;
   };
 
   const importXlsx = async (file: File): Promise<void> => {
@@ -144,7 +142,7 @@ export const usePkbService = () => {
       // let splitDataSukuCadang = data[i].sukuCadang
       //   ? data[i].sukuCadang.split("|")
       //   : [];
-      let listSukuCadang = [];
+      // let listSukuCadang = [];
 
       if (data[i].sukuCadang !== null) {
         let splitDataSukuCadang = data[i].sukuCadang.split("|");
@@ -210,6 +208,10 @@ export const usePkbService = () => {
     };
 
     const resp = await uploadExcel(dataUpload);
+
+    if (resp === null) {
+      return null;
+    }
 
     // Example: await axios.post('/api/upload', data);
     // Add any logic to handle the uploading of data.

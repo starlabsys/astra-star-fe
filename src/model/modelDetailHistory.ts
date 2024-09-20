@@ -6,8 +6,8 @@
 
 export interface ModelDetailHistory {
   errorCode: string;
-  message:   string;
-  result:    Result;
+  message: string;
+  result: Result;
 }
 
 export interface Result {
@@ -15,50 +15,50 @@ export interface Result {
 }
 
 export interface ListDetailHistoryPkb {
-  id:                 string;
-  alamat:             string;
-  provinsi:           string;
-  kota:               string;
-  kecamatan:          string;
-  kelurahan:          string;
-  kodePos:            string;
-  rt:                 string;
-  rw:                 string;
+  id: string;
+  alamat: string;
+  provinsi: string;
+  kota: string;
+  kecamatan: string;
+  kelurahan: string;
+  kodePos: string;
+  rt: string;
+  rw: string;
   typeComingCustomer: string;
-  alasanKeAhass:      string;
-  hsoIdPenerima:      string;
-  namaPenerima:       string;
-  customerId:         string;
-  status:             string;
-  dealerId:           string;
-  statusData:         string;
-  namaDealer:         string;
-  kmAkhirMotor:       number;
-  platNumber:         string;
-  nomorMesin:         string;
-  nomorRangka:        string;
-  typeMotor:          string;
-  tahunMotor:         number;
-  kondisiBensin:      number;
-  noKTP:              string;
-  namaStnk:           string;
-  noHP:               string;
-  namaPemilik:        string;
-  saranMekanik:       string;
-  tglBeli:            string;
-  nomorAntrian:       string;
-  customerNo:         string;
-  createdAt:          string;
-  description:        string;
-  pekerjaan:          Pekerjaan[];
+  alasanKeAhass: string;
+  hsoIdPenerima: string;
+  namaPenerima: string;
+  customerId: string;
+  status: string;
+  dealerId: string;
+  statusData: string;
+  namaDealer: string;
+  kmAkhirMotor: number;
+  platNumber: string;
+  nomorMesin: string;
+  nomorRangka: string;
+  typeMotor: string;
+  tahunMotor: number;
+  kondisiBensin: number;
+  noKTP: string;
+  namaStnk: string;
+  noHP: string;
+  namaPemilik: string;
+  saranMekanik: string;
+  tglBeli: string;
+  nomorAntrian: string;
+  customerNo: string;
+  createdAt: string;
+  description: string;
+  pekerjaan: Pekerjaan[];
 }
 
 export interface Pekerjaan {
-  gudang:            string;
-  jenisPekerjaan:    string;
+  gudang: string;
+  jenisPekerjaan: string;
   kategoriPekerjaan: string;
-  namaPekerjaan:     string;
-  sukuCadang:        any[];
+  namaPekerjaan: string;
+  sukuCadang: any[];
 }
 
 // Converts JSON strings to/from your types

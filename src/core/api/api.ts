@@ -249,8 +249,6 @@ export const postFetchLogin = async (
       const token = resp.data.result.token;
       const statusToken = resp.data.result.user.statusToken;
 
-      console.log("Statut Token", statusToken);
-
       // console.log("Token Set to Cookie", token);
       cookieStore.set("token", token, {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24),

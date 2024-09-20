@@ -54,9 +54,9 @@ const useDetailHistoryService = (uuid: string) => {
         saranMekanik: detail.saranMekanik,
       },
     ];
-
-    console.log("New Detail Item", newDetail);
-    console.log("New Detail Pekerjaan", pekerjaan);
+    //
+    // console.log("New Detail Item", newDetail);
+    // console.log("New Detail Pekerjaan", pekerjaan);
 
     const resp = await uploadDetailExcel(newDetail);
 

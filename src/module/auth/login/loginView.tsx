@@ -5,15 +5,8 @@ import { Button } from "@nextui-org/button";
 import LoginService from "@/src/module/auth/login/loginService";
 
 export const LoginView = () => {
-  const {
-    username,
-    setUsername,
-    password,
-    setPassword,
-    submit,
-    isLoading,
-    setIsLoading,
-  } = LoginService();
+  const { username, setUsername, password, setPassword, submit, isLoading } =
+    LoginService();
 
   return (
     <div className="grid grid-cols-2">
