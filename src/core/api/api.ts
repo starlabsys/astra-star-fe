@@ -9,7 +9,7 @@ import {
 
 function baseUrl(): string {
   // return process.env.BASE_URL ?? "";
-  return "https://api-star.tengkuangonet.my.id";
+  return "https://api-star.tengkuangonet.my.id/api";
 }
 
 enum Method {
