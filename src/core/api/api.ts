@@ -114,7 +114,7 @@ const fetchData = async (
 
   return fetch(base, fetchOptions)
     .then(async (res) => {
-      console.debug("response status", res.status);
+      console.debug("response status Data", res.status);
       const [respJson] = await Promise.all([res.json()]);
 
       if (res.status === 200 || res.status === 201) {
@@ -135,18 +135,37 @@ const fetchData = async (
         throw new ErrorData(respJson.message, res.status);
       } else if (res.status === 404) {
         throw new ErrorData(respJson.message, 404);
+      } else if (res.status === 504) {
+        throw new ErrorData(
+          "Waktu Menunggu Terlalu lama, silahkan di cek di menu history",
+          504,
+        );
       } else {
         throw new ErrorData("Network response was not ok", 500);
       }
     })
     .catch((error: ErrorData) => {
-      console.debug("error", error.message);
+      console.debug("error data catch", error.message);
+
+      // if (error.status === 504) {
+      //   return {
+      //     message: "Waktu Menunggu Terlalu lama, silahkan cek di menu history",
+      //     statusCode: 504,
+      //     data: null,
+      //   };
+      // }
 
       return {
-        message: error.message,
-        statusCode: error.status,
+        message: "Waktu Menunggu Terlalu lama, silahkan cek di menu history",
+        statusCode: 504,
         data: null,
       };
+
+      // return {
+      //   message: error.message,
+      //   statusCode: error.status,
+      //   data: null,
+      // };
     });
 };
 

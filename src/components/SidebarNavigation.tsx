@@ -4,6 +4,7 @@ import { BsArrowLeftShort, BsSearch } from "react-icons/bs";
 import { RiDashboardFill } from "react-icons/ri";
 import Image from "next/image";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 const SidebarNavigation = () => {
   const [isOpen, setIsOpen] = React.useState(true);
@@ -29,21 +30,12 @@ const SidebarNavigation = () => {
       icon: "AiFillEnvironment",
       link: "/profile",
     },
-    // {
-    //   'name': 'Settings',
-    //   'icon': 'AiFillEnvironment',
-    //   'link': '/settings',
-    //   'subMenus': [
-    //     {
-    //       'name': 'Profile',
-    //       'link': '/profile'
-    //     },{
-    //       'name': 'Account',
-    //       'link': '/account'
-    //     }
-    //   ]
-    // }
   ];
+
+  const handleLogout = () => {
+    Cookies.remove("token");
+    Cookies.remove("status_token");
+  };
 
   return (
     <div
@@ -101,6 +93,29 @@ const SidebarNavigation = () => {
             </li>
           </Link>
         ))}
+        <Link
+          href={`/login`}
+          onClick={() => {
+            //
+            handleLogout();
+          }}
+        >
+          <li className="text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-gray-500 hover:text-white rounded-md mt-2">
+            <span className="text-2xl block float-left">
+              <RiDashboardFill />
+            </span>
+            <span
+              className={`text-base font-medium text-black flex-1 ${!isOpen && "hidden"}`}
+            >
+              Logout
+            </span>
+            {/* {menu.subMenus && isOpen && (
+                  <BsChevronDown className={`${subMenuOpen && "rotate-180"}`} onClick={()=>{
+                    setSubMenuOpen(!subMenuOpen)
+                  }}/>
+                )} */}
+          </li>
+        </Link>
       </ul>
     </div>
   );

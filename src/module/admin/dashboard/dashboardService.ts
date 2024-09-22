@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { ListUUID } from "@/src/model/modelHistory";
 import { getDataHistory } from "@/src/repository/history/historyRepository";
+import { ListUUID } from "@/src/model/modelHistory";
 
-const useHistoryService = () => {
+const useDashboardService = () => {
   const [listHistory, setListHistory] = useState<ListUUID[] | null>();
 
   const getListHistory = async () => {
@@ -13,14 +13,13 @@ const useHistoryService = () => {
   };
 
   useEffect(() => {
+    //
     getListHistory();
   }, []);
-
-  // Only run once after the component is mounted
 
   return {
     listHistory,
   };
 };
 
-export default useHistoryService;
+export default useDashboardService;
