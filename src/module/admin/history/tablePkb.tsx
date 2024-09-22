@@ -12,16 +12,14 @@ import Link from "next/link";
 
 import useHistoryService from "./historyService";
 
-import { useHistoryContext } from "@/src/app/(admin)/history-pkb/HistoryProvider";
-
 const TablePkb: React.FC = () => {
   const { listHistory } = useHistoryService();
-  const { setSelectedUuid } = useHistoryContext(); // Get setUuid function from context
+  // const { setSelectedUuid } = useHistoryContext(); // Get setUuid function from context
 
-  const handleOrderClick = (item: any) => {
-    setSelectedUuid(item); // Correctly pass the object of UuidPr
-    // console.log(uuid);
-  };
+  // const handleOrderClick = (item: any) => {
+  //   setSelectedUuid(item); // Correctly pass the object of UuidPr
+  //   // console.log([uuid]);
+  // };
 
   return (
     <Table aria-label="Example static collection table">
@@ -44,10 +42,9 @@ const TablePkb: React.FC = () => {
                 className="mt-10"
                 color="default"
                 size="lg"
-                variant="bordered"
-                onClick={() => handleOrderClick(item)} // Handle the click event
+                variant="bordered" // Handle the click event
               >
-                <Link href="/history-pkb/detail">Pesan Sekarang</Link>
+                <Link href={`/history-pkb/${item.uuid}`}>Detail History</Link>
               </Button>
             </TableCell>
           </TableRow>

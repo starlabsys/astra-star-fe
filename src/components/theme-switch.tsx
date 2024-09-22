@@ -16,6 +16,7 @@ export interface ThemeSwitchProps {
 
 export const ThemeSwitch: FC<ThemeSwitchProps> = ({
   className,
+
   classNames,
 }) => {
   const { theme, setTheme } = useTheme();

@@ -30,12 +30,18 @@ export interface PkbData {
   rw: string;
   typeComingCustomer: string;
   alasanKeAhass: string;
-  kategoriPekerjaan: string;
-  jenisPekerjaan: string;
-  namaPekerjaan: string;
-  gudang: string;
-  sukuCadang: string;
-  qty: string;
+  kategoriPekerjaan1: string;
+  jenisPekerjaan1: string;
+  namaPekerjaan1: string;
+  gudang1: string;
+  sukuCadang1: string;
+  qtySukuCadang1: string;
+  kategoriPekerjaan2: string;
+  jenisPekerjaan2: string;
+  namaPekerjaan2: string;
+  gudang2: string;
+  sukuCadang2: string;
+  qtySukuCadang2: string;
   hsoIdPenerima: string;
   saranMekanik: string;
 }
@@ -73,7 +79,7 @@ export const usePkbService = () => {
           });
           const [header, ...rows] = json as any[];
 
-          const validRows = rows.filter((row) => row && row.length >= 28); // Ensure row is not undefined and has all required columns
+          const validRows = rows.filter((row) => row && row.length >= 26); // Ensure row is not undefined and has all required columns
 
           if (validRows.length === 0) {
             console.error("No valid data rows found in the Excel sheet.");
@@ -104,15 +110,20 @@ export const usePkbService = () => {
             rw: row[18],
             typeComingCustomer: row[19],
             alasanKeAhass: row[20],
-            // pekerjaan: row[21],
-            kategoriPekerjaan: row[21],
-            jenisPekerjaan: row[22],
-            namaPekerjaan: row[23],
-            gudang: row[24],
-            sukuCadang: row[25],
-            qty: row[26],
-            hsoIdPenerima: row[27],
-            saranMekanik: row[28],
+            hsoIdPenerima: row[21],
+            saranMekanik: row[22],
+            kategoriPekerjaan1: row[23],
+            jenisPekerjaan1: row[24],
+            namaPekerjaan1: row[25],
+            gudang1: row[26],
+            sukuCadang1: row[27],
+            qtySukuCadang1: row[28],
+            kategoriPekerjaan2: row[29],
+            jenisPekerjaan2: row[30],
+            namaPekerjaan2: row[31],
+            gudang2: row[32],
+            sukuCadang2: row[33],
+            qtySukuCadang2: row[34],
           }));
 
           setImportExcel(formattedRows); // Update the context state with valid rows
@@ -135,43 +146,65 @@ export const usePkbService = () => {
     for (let i = 0; i < data.length; i++) {
       let pekerjaan: PekerjaanInterface[] = [];
 
-      let splitDataKategori = data[i].kategoriPekerjaan.split("|");
-      let splitDataJenis = data[i].jenisPekerjaan.split("|");
-      let splitDataNama = data[i].namaPekerjaan.split("|");
-      let splitDataGudang = data[i].gudang.split("|");
-      // let splitDataSukuCadang = data[i].sukuCadang
-      //   ? data[i].sukuCadang.split("|")
-      //   : [];
-      // let listSukuCadang = [];
+      if (data[i].namaPekerjaan1) {
+        let sukuCadangData = [];
 
-      if (data[i].sukuCadang !== null) {
-        let splitDataSukuCadang = data[i].sukuCadang.split("|");
-        let splitDataQtySukuCadang = data[i].qty.split("|");
+        if (data[i].sukuCadang1) {
+          const splitPart = data[i].sukuCadang1.split("|");
+          const splitQty = data[i].qtySukuCadang1.split("|");
 
-        for (let j = 0; j < splitDataKategori.length; j++) {
-          pekerjaan.push({
-            kategoriPekerjaan: splitDataKategori[j],
-            jenisPekerjaan: splitDataJenis[j],
-            namaPekerjaan: splitDataNama[j],
-            gudang: splitDataGudang[j],
-            sukuCadang: [
-              {
-                name: splitDataSukuCadang[j],
-                qty: Number(splitDataQtySukuCadang[j]),
-              },
-            ],
-          });
+          for (let key = 0; key < splitPart.length; key++) {
+            if (splitPart[key] !== "") {
+              let objectSukuCadang = {
+                name: splitPart[key].toString(),
+                qty: Number(splitQty[key]),
+              };
+
+              sukuCadangData.push(objectSukuCadang);
+            }
+          }
         }
-      } else {
-        for (let j = 0; j < splitDataKategori.length; j++) {
-          pekerjaan.push({
-            kategoriPekerjaan: splitDataKategori[j],
-            jenisPekerjaan: splitDataJenis[j],
-            namaPekerjaan: splitDataNama[j],
-            gudang: splitDataGudang[j],
-            sukuCadang: [],
-          });
+
+        const listPekerjaan1 = {
+          kategoriPekerjaan: data[i].kategoriPekerjaan1,
+          jenisPekerjaan: data[i].jenisPekerjaan1,
+          namaPekerjaan: data[i].namaPekerjaan1,
+          gudang: data[i].gudang1,
+          sukuCadang: sukuCadangData,
+        };
+
+        pekerjaan.push(listPekerjaan1);
+      }
+
+      // Pekerjaan 2
+      if (data[i].namaPekerjaan2) {
+        let sukuCadangData2 = [];
+
+        if (data[i].sukuCadang2) {
+          const splitPart2 = data[i].sukuCadang2.split("|");
+          const splitQty2 = data[i].qtySukuCadang2.split("|");
+
+          for (let key = 0; key < splitPart2.length; key++) {
+            if (splitPart2[key] !== "") {
+              let objectSukuCadang = {
+                name: splitPart2[key].toString(),
+                qty: Number(splitQty2[key]),
+              };
+
+              sukuCadangData2.push(objectSukuCadang);
+            }
+          }
         }
+
+        const listPekerjaan2 = {
+          kategoriPekerjaan: data[i].kategoriPekerjaan2,
+          jenisPekerjaan: data[i].jenisPekerjaan2,
+          namaPekerjaan: data[i].namaPekerjaan2,
+          gudang: data[i].gudang2,
+          sukuCadang: sukuCadangData2,
+        };
+
+        pekerjaan.push(listPekerjaan2);
       }
 
       jsonData.push({
@@ -207,11 +240,9 @@ export const usePkbService = () => {
       jsonData: jsonData,
     };
 
-    const resp = await uploadExcel(dataUpload);
+    const resp = uploadExcel(dataUpload);
 
-    if (resp === null) {
-      return null;
-    }
+    setImportExcel([]);
 
     // Example: await axios.post('/api/upload', data);
     // Add any logic to handle the uploading of data.

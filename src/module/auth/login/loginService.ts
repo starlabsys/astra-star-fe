@@ -18,6 +18,8 @@ const LoginService = () => {
     if (resp !== null) {
       // Redirect to /dashboard after successful login
       router.push("/dashboard");
+    } else {
+      setIsLoading(false);
     }
   };
 

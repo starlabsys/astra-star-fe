@@ -68,8 +68,8 @@ const useDetailHistoryService = (uuid: string) => {
   };
 
   useEffect(() => {
-    fetchDetailHistory(uuid); // Replace 'uuid' with the actual UUID
-  }, []); // Include 'uuid' in the dependency array
+    fetchDetailHistory(uuid); // Replace '[uuid]' with the actual UUID
+  }, []); // Include '[uuid]' in the dependency array
 
   return {
     listDetailHistory,
