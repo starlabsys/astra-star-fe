@@ -39,11 +39,12 @@ const fetchData = async (
   const base = `${baseUrl()}${path}`;
   const headers = await header();
 
+  console.debug("\n====================================");
   console.debug("fetching data from", base);
-  console.debug("headers", headers);
+  console.debug("headers", JSON.stringify(headers));
   console.debug("method", method);
-  console.debug("body", body);
-  console.debug("====================================");
+  console.debug("body", JSON.stringify(body));
+  console.debug("====================================\n");
 
   const fetchOptions: RequestInit = {
     method: method,
@@ -71,6 +72,8 @@ const fetchData = async (
   return Promise.race([fetchPromise, timeoutPromise])
     .then(async (res: Response) => {
       // Menetapkan tipe Response di sini
+      console.debug("\n====================================");
+      console.debug("response data from", base);
       console.debug("response status Data", res.status);
 
       const contentType = res.headers.get("Content-Type");
@@ -81,7 +84,7 @@ const fetchData = async (
         const respJson = JSON.parse(textResponse); // Mengurai JSON jika konten adalah JSON
 
         if (res.status === 200 || res.status === 201) {
-          console.debug("response body", respJson);
+          console.debug("response body", JSON.stringify(respJson));
 
           return {
             message: respJson.message ?? "Success",
@@ -116,6 +119,9 @@ const fetchData = async (
         statusCode: error.status || 500,
         data: null,
       };
+    })
+    .finally(() => {
+      console.debug("====================================\n");
     });
 };
 
