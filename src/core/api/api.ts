@@ -8,7 +8,6 @@ import {
 } from "@/src/core/api/interface/InterfaceResponseResult";
 
 function baseUrl(): string {
-  // return process.env.BASE_URL ?? "";
   return "https://api-star.tengkuangonet.my.id/api";
 }
 
@@ -21,72 +20,16 @@ enum Method {
   HEAD = "HEAD",
 }
 
-const cookieStore = cookies();
-
 const header = async (): Promise<HeadersInit | undefined> => {
-  const token = await cookieStore.get("token");
+  const cookieStore = cookies();
+
+  const token = cookieStore.get("token");
 
   return {
     Authorization: `Bearer ${token?.value}`,
     "Content-Type": "application/json",
   };
 };
-
-// const fetchData = async (
-//   path: string,
-//   body: Record<string, any>,
-//   method: Method,
-// ): Promise<any> => {
-//   const base = `${baseUrl()}${path}`;
-
-//   const headers = await header();
-
-//   console.debug("fetching data from", base);
-//   console.debug("headers", headers);
-//   console.debug("method", method);
-//   console.debug("body", body);
-//   console.debug("====================================");
-
-//   return fetch(base, {
-//     method: method,
-//     headers: headers,
-//     body: JSON.stringify(body),
-//   })
-//     .then(async (res) => {
-//       console.debug("response status", res.status);
-//       const [respJson] = await Promise.all([res.json()]);
-
-//       if (res.status == 200 || res.status == 201) {
-//         console.debug("response body", respJson);
-
-//         if (respJson.token !== null) {
-//           cookieStore.set("token", respJson.token, {
-//             expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-//           });
-//         }
-
-//         return {
-//           message: respJson.message ?? "Success",
-//           statusCode: res.status,
-//           data: respJson,
-//         };
-//       } else if (res.status == 400) {
-//         // console.log("ERROR 400")
-//         throw new ErrorData(respJson.message, res.status);
-//       } else {
-//         throw new ErrorData("Network response was not ok", 500);
-//       }
-//     })
-//     .catch((error: ErrorData) => {
-//       console.debug("error", error.message);
-
-//       return {
-//         message: error.message,
-//         statusCode: error.status,
-//         data: null,
-//       };
-//     });
-// };
 
 const fetchData = async (
   path: string,
@@ -112,60 +55,67 @@ const fetchData = async (
     fetchOptions.body = JSON.stringify(body);
   }
 
-  return fetch(base, fetchOptions)
-    .then(async (res) => {
+  const timeout = 10000; // 10 seconds
+  const controller = new AbortController();
+  const { signal } = controller;
+
+  const fetchPromise = fetch(base, { ...fetchOptions, signal });
+
+  const timeoutPromise = new Promise<never>((_, reject) =>
+    setTimeout(() => {
+      controller.abort(); // Membatalkan fetch jika timeout
+      reject(new Error("Request timeout")); // Menolak promise dengan error
+    }, timeout),
+  );
+
+  return Promise.race([fetchPromise, timeoutPromise])
+    .then(async (res: Response) => {
+      // Menetapkan tipe Response di sini
       console.debug("response status Data", res.status);
-      const [respJson] = await Promise.all([res.json()]);
 
-      if (res.status === 200 || res.status === 201) {
-        console.debug("response body", respJson);
+      const contentType = res.headers.get("Content-Type");
+      const textResponse = await res.text(); // Mengambil respon sebagai teks
 
-        // if (respJson.token !== null) {
-        //   cookieStore.set("token", respJson.token, {
-        //     expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-        //   });
-        // }
+      // Periksa apakah konten adalah JSON
+      if (contentType && contentType.includes("application/json")) {
+        const respJson = JSON.parse(textResponse); // Mengurai JSON jika konten adalah JSON
 
-        return {
-          message: respJson.message ?? "Success",
-          statusCode: res.status,
-          data: respJson,
-        };
-      } else if (res.status === 400) {
-        throw new ErrorData(respJson.message, res.status);
-      } else if (res.status === 404) {
-        throw new ErrorData(respJson.message, 404);
-      } else if (res.status === 504) {
-        throw new ErrorData(
-          "Waktu Menunggu Terlalu lama, silahkan di cek di menu history",
-          504,
-        );
+        if (res.status === 200 || res.status === 201) {
+          console.debug("response body", respJson);
+
+          return {
+            message: respJson.message ?? "Success",
+            statusCode: res.status,
+            data: respJson,
+          };
+        } else if (res.status === 400) {
+          throw new ErrorData(respJson.message, res.status);
+        } else if (res.status === 401) {
+          cookies().delete("token");
+          throw new ErrorData(respJson.message, res.status);
+        } else if (res.status === 404) {
+          throw new ErrorData(respJson.message, 404);
+        } else if (res.status === 504) {
+          throw new ErrorData(
+            "Waktu Menunggu Terlalu lama, silahkan di cek di menu history",
+            504,
+          );
+        } else {
+          throw new ErrorData("Network response was not ok", 500);
+        }
       } else {
-        throw new ErrorData("Network response was not ok", 500);
+        // Jika konten bukan JSON, throw error
+        throw new Error(`Unexpected response: ${textResponse}`);
       }
     })
     .catch((error: ErrorData) => {
       console.debug("error data catch", error.message);
 
-      // if (error.status === 504) {
-      //   return {
-      //     message: "Waktu Menunggu Terlalu lama, silahkan cek di menu history",
-      //     statusCode: 504,
-      //     data: null,
-      //   };
-      // }
-
       return {
-        message: "Waktu Menunggu Terlalu lama, silahkan cek di menu history",
-        statusCode: 504,
+        message: error.message,
+        statusCode: error.status || 500,
         data: null,
       };
-
-      // return {
-      //   message: error.message,
-      //   statusCode: error.status,
-      //   data: null,
-      // };
     });
 };
 
@@ -261,6 +211,8 @@ export const postFetchLogin = async (
   path: string,
   body: Record<string, any>,
 ): Promise<ReturnResult> => {
+  const cookieStore = cookies();
+
   const resp = await fetchData(path, body, Method.POST);
 
   if (resp.data !== null) {
