@@ -4,10 +4,10 @@ import {
   getProfileData,
   putRefreshNewToken,
 } from "@/src/repository/profile/profileRepository";
-import { ModelGetUser } from "@/src/model/modelGetUser";
+import { ResultGetUser } from "@/src/model/modelGetUser";
 
 const useProfileService = () => {
-  const [profile, setProfile] = useState<ModelGetUser>();
+  const [profile, setProfile] = useState<ResultGetUser>();
   const fetchData = async () => {
     //
     const resp = await getProfileData();
@@ -16,11 +16,15 @@ const useProfileService = () => {
       return null;
     }
 
-    setProfile(resp);
+    setProfile(resp.result);
   };
 
-  const fetchRefreshToken = async (tokenAntrian: string, tokenWork: string) => {
-    const resp = await putRefreshNewToken(tokenAntrian, tokenWork);
+  const fetchRefreshToken = async (
+    tokenAntrian: string,
+    tokenWork: string,
+    tokenPart: string,
+  ) => {
+    const resp = await putRefreshNewToken(tokenAntrian, tokenWork, tokenPart);
 
     if (resp === null) {
       return null;

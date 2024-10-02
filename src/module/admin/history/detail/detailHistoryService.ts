@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 
 import { ListDetailHistoryPkb } from "@/src/model/modelDetailHistory";
 import { getDataDetailHistory } from "@/src/repository/history/historyRepository";
-import { uploadDetailExcel } from "@/src/repository/pkb/pkbRepository";
+import {
+  deleteDetailPkb,
+  uploadDetailExcel,
+} from "@/src/repository/pkb/pkbRepository";
 
 const useDetailHistoryService = (uuid: string) => {
   const [listDetailHistory, setListDetailHistory] = useState<
@@ -88,6 +91,14 @@ const useDetailHistoryService = (uuid: string) => {
     // const jsonData = [dataItem]; // You can convert it to an array if needed
   };
 
+  const fetchDeleteData = async (id: number) => {
+    const resp = await deleteDetailPkb(id);
+
+    if (resp === null) {
+      return null;
+    }
+  };
+
   useEffect(() => {
     fetchDetailHistory(uuid); // Replace '[uuid]' with the actual UUID
   }, []); // Include '[uuid]' in the dependency array
@@ -101,6 +112,7 @@ const useDetailHistoryService = (uuid: string) => {
     setListDetail,
     pushDetailHistory,
     pushDetailData,
+    fetchDeleteData,
   };
 };
 

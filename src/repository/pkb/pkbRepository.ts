@@ -1,5 +1,6 @@
-import { post } from "@/src/core/api/baseApi";
+import { deleted, post } from "@/src/core/api/baseApi";
 import { ConvertPkb, SuccessPkb } from "@/src/model/modelPkb";
+import { ConvertToModelDeletePkb } from "@/src/model/modelDeletePkb";
 
 export const uploadExcel = async (data: any): Promise<SuccessPkb | null> => {
   const resp = post("/upload-data-controller/upload", {
@@ -26,4 +27,14 @@ export const uploadDetailExcel = async (
 
   //   console.log(resp);
   return ConvertPkb.toSuccessPkb(JSON.stringify(resp));
+};
+
+export const deleteDetailPkb = async (id: number): Promise<any | null> => {
+  const resp = await deleted("/upload-data-controller/delete/" + id, {});
+
+  if (resp === null) {
+    return null;
+  }
+
+  return ConvertToModelDeletePkb.toModelDeletePkb(JSON.stringify(resp));
 };

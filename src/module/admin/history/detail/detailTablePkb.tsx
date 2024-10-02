@@ -13,6 +13,7 @@ import { useDisclosure } from "@nextui-org/react";
 import ModalDetailHistory from "./modalDetailHistory";
 
 import { ListDetailHistoryPkb } from "@/src/model/modelDetailHistory";
+import useDetailHistoryService from "@/src/module/admin/history/detail/detailHistoryService";
 
 interface DetailTablePkbProps {
   data: ListDetailHistoryPkb[];
@@ -24,6 +25,7 @@ const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data, uuid }) => {
   const [selectedItem, setSelectedItem] = useState<ListDetailHistoryPkb | null>(
     null,
   ); // Initialize with null
+  const { fetchDeleteData } = useDetailHistoryService(uuid);
 
   const handleOpen = (item: ListDetailHistoryPkb) => {
     setSelectedItem(item); // Set the selected item
@@ -55,7 +57,7 @@ const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data, uuid }) => {
                   {item.status}
                 </div>
               </TableCell>
-              <TableCell>
+              <TableCell className={`gap-4`}>
                 <Button
                   className="capitalize"
                   color="warning"
@@ -63,6 +65,16 @@ const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data, uuid }) => {
                   onPress={() => handleOpen(item)} // Pass item to handleOpen
                 >
                   Detail
+                </Button>
+                <Button
+                  className="capitalize"
+                  color="danger"
+                  variant="flat"
+                  onPress={() => {
+                    fetchDeleteData(Number(item.id));
+                  }} // Pass item to handleOpen
+                >
+                  Hapus
                 </Button>
               </TableCell>
             </TableRow>
