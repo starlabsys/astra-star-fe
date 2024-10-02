@@ -115,57 +115,45 @@ const fetchData = async (
   return fetch(base, fetchOptions)
     .then(async (res) => {
       console.debug("response status Data", res.status);
-      const [respJson] = await Promise.all([res.json()]);
 
-      if (res.status === 200 || res.status === 201) {
+      // Only parse JSON if status is 2xx
+      if (res.ok) {
+        const respJson = await res.json();
+
         console.debug("response body", respJson);
-
-        // if (respJson.token !== null) {
-        //   cookieStore.set("token", respJson.token, {
-        //     expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-        //   });
-        // }
 
         return {
           message: respJson.message ?? "Success",
           statusCode: res.status,
           data: respJson,
         };
-      } else if (res.status === 400) {
-        throw new ErrorData(respJson.message, res.status);
-      } else if (res.status === 404) {
-        throw new ErrorData(respJson.message, 404);
-      } else if (res.status === 504) {
-        throw new ErrorData(
-          "Waktu Menunggu Terlalu lama, silahkan di cek di menu history",
-          504,
-        );
-      } else {
-        throw new ErrorData("Network response was not ok", 500);
       }
+
+      // Handle known error statuses
+      if (res.status === 400 || res.status === 404 || res.status === 504) {
+        const respJson = await res.json();
+
+        throw new ErrorData(respJson.message, res.status);
+      }
+
+      // For 500 status or other non-handled statuses
+      if (res.status === 500) {
+        throw new ErrorData("Internal Server Error", 500);
+      }
+
+      // For other unexpected statuses
+      throw new ErrorData("Network response was not ok", res.status);
     })
     .catch((error: ErrorData) => {
       console.debug("error data catch", error.message);
 
-      // if (error.status === 504) {
-      //   return {
-      //     message: "Waktu Menunggu Terlalu lama, silahkan cek di menu history",
-      //     statusCode: 504,
-      //     data: null,
-      //   };
-      // }
+      const statusCode = error.status || 500;
 
       return {
-        message: "Waktu Menunggu Terlalu lama, silahkan cek di menu history",
-        statusCode: 504,
+        message: error.message || "Internal Server Error",
+        statusCode: statusCode,
         data: null,
       };
-
-      // return {
-      //   message: error.message,
-      //   statusCode: error.status,
-      //   data: null,
-      // };
     });
 };
 

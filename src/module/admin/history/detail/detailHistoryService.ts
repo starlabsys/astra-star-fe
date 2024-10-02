@@ -67,6 +67,27 @@ const useDetailHistoryService = (uuid: string) => {
     onClose();
   };
 
+  const pushDetailData = async (item: any, pekerjaan: any) => {
+    // Assuming item is an object
+    const dataItem = { ...item }; // Create a shallow copy of the object
+
+    // Add pekerjaan to dataItem
+    dataItem.pekerjaan = pekerjaan;
+
+    const jsonData = [dataItem];
+
+    const resp = await uploadDetailExcel(jsonData);
+
+    if (resp === null) {
+      return null;
+    }
+
+    onClose();
+
+    // You can now use the updated object
+    // const jsonData = [dataItem]; // You can convert it to an array if needed
+  };
+
   useEffect(() => {
     fetchDetailHistory(uuid); // Replace '[uuid]' with the actual UUID
   }, []); // Include '[uuid]' in the dependency array
@@ -79,6 +100,7 @@ const useDetailHistoryService = (uuid: string) => {
     listDetail,
     setListDetail,
     pushDetailHistory,
+    pushDetailData,
   };
 };
 
