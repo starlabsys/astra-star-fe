@@ -115,19 +115,19 @@ export const put = async (path: string, body: Record<string, any>) => {
 };
 
 export const deleted = async (path: string, body: Record<string, any>) => {
-  const date = new Date();
-
-  callToastLoading(date.getTime().toString());
+  // const date = new Date();
+  //
+  // callToastLoading(date.getTime().toString());
   const resp = await deleteFetchData(path, body);
 
-  callToastDone(date.getTime().toString());
+  // callToastDone(date.getTime().toString());
 
   if (resp.data === null) {
     callToastError(resp.message);
 
     return null;
   }
-  callToastSuccess(resp.message);
+  callToastSuccess("Sukses Delete Data");
 
   return resp.data;
 };

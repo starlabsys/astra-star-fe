@@ -18,10 +18,12 @@ export const getProfileData = async (): Promise<ModelGetUser | null> => {
 export const putRefreshNewToken = async (
   tokenAntrian: string,
   tokenWork: string,
+  tokenPart: string,
 ): Promise<ModelRefreshToken | null> => {
   const resp = await putOnly("/users/updateRefreshToken", {
     tokenAntrian,
     tokenWork,
+    tokenPart,
   });
 
   if (resp === null) {
