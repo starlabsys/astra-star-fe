@@ -19,7 +19,7 @@ const DetailHistoryView = () => {
   }
 
   return (
-    <div>
+    <div className={`w-full flex flex-col px-7 py-2 gap-4`}>
       <DetailTablePkb data={listDetailHistory} uuid={slug} />
     </div>
   );

@@ -1,6 +1,5 @@
 import {
   Button,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -8,7 +7,12 @@ import {
   ModalHeader,
 } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
+import { Input } from "@nextui-org/input";
 
+interface SukuCadang {
+  name: string;
+  qty: number;
+}
 import {
   ListDetailHistoryPkb,
   Pekerjaan,
@@ -22,13 +26,15 @@ const ModalDetailHistory: React.FC<{
   onClose: () => void;
 }> = ({ isOpen, item, onClose, uuid }) => {
   // Initialize pekerjaan state
-  const { listDetail, setListDetail, pushDetailHistory } =
+  const { listDetail, setListDetail, pushDetailHistory, pushDetailData } =
     useDetailHistoryService(uuid);
   const [pekerjaan, setPekerjaan] = useState<Pekerjaan[]>(
     item?.pekerjaan || [],
   );
+  const [scrollBehavior, setScrollBehavior] = React.useState("inside");
+  const [dataItem, setDataItem] = useState<any>({});
 
-  // Handler to add a new pekerjaan
+  // Add new pekerjaan
   const addPekerjaan = () => {
     setPekerjaan([
       ...pekerjaan,
@@ -42,12 +48,7 @@ const ModalDetailHistory: React.FC<{
     ]);
   };
 
-  // Handler to remove a pekerjaan
-  const removePekerjaan = (index: number) => {
-    setPekerjaan(pekerjaan.filter((_, i) => i !== index));
-  };
-
-  // Handler to update pekerjaan data
+  // Update pekerjaan data
   const handlePekerjaanChange = (
     index: number,
     field: keyof Pekerjaan,
@@ -60,16 +61,39 @@ const ModalDetailHistory: React.FC<{
     setPekerjaan(updatedPekerjaan);
   };
 
-  // Handler to add a new sukuCadang to a specific pekerjaan
+  // Add new sukuCadang to specific pekerjaan
   const addSukuCadang = (pekerjaanIndex: number) => {
     const updatedPekerjaan = pekerjaan.map((p, i) =>
-      i === pekerjaanIndex ? { ...p, sukuCadang: [...p.sukuCadang, ""] } : p,
+      i === pekerjaanIndex
+        ? { ...p, sukuCadang: [...p.sukuCadang, { name: "", qty: 0 }] }
+        : p,
     );
 
     setPekerjaan(updatedPekerjaan);
   };
 
-  // Handler to remove a sukuCadang from a specific pekerjaan
+  // Update sukuCadang data
+  const handleSukuCadangChange = (
+    pekerjaanIndex: number,
+    sukuCadangIndex: number,
+    field: keyof SukuCadang,
+    value: string,
+  ) => {
+    const updatedPekerjaan = pekerjaan.map((p, i) =>
+      i === pekerjaanIndex
+        ? {
+            ...p,
+            sukuCadang: p.sukuCadang.map((sc, j) =>
+              j === sukuCadangIndex ? { ...sc, [field]: value } : sc,
+            ),
+          }
+        : p,
+    );
+
+    setPekerjaan(updatedPekerjaan);
+  };
+
+  // Remove sukuCadang from specific pekerjaan
   const removeSukuCadang = (
     pekerjaanIndex: number,
     sukuCadangIndex: number,
@@ -85,28 +109,8 @@ const ModalDetailHistory: React.FC<{
 
     setPekerjaan(updatedPekerjaan);
   };
-
-  // Handler to update sukuCadang data
-  const handleSukuCadangChange = (
-    pekerjaanIndex: number,
-    sukuCadangIndex: number,
-    value: string,
-  ) => {
-    const updatedPekerjaan = pekerjaan.map((p, i) =>
-      i === pekerjaanIndex
-        ? {
-            ...p,
-            sukuCadang: p.sukuCadang.map((sc, j) =>
-              j === sukuCadangIndex ? value : sc,
-            ),
-          }
-        : p,
-    );
-
-    setPekerjaan(updatedPekerjaan);
-  };
-
   // Local state for all fields
+  const [id, setId] = useState<string>(item?.id || "");
   const [namaPemilik, setNamaPemilik] = useState<string>(
     item?.namaPemilik || "",
   );
@@ -120,8 +124,8 @@ const ModalDetailHistory: React.FC<{
   const [tahunMotor, setTahunMotor] = useState<string>(
     item?.tahunMotor.toString() || "",
   );
-  const [kondisiBensin, setKondisiBensin] = useState<string>(
-    item?.kondisiBensin.toString() || "",
+  const [kondisiBensin, setKondisiBensin] = useState<number>(
+    Number(item?.kondisiBensin) || 0,
   );
   const [noKTP, setNoKTP] = useState<string>(item?.noKTP || "");
   const [noHP, setNoHP] = useState<string>(item?.noHP || "");
@@ -132,6 +136,10 @@ const ModalDetailHistory: React.FC<{
   const [kelurahan, setKelurahan] = useState<string>(item?.kelurahan || "");
   const [rt, setRT] = useState<string>(item?.rt || "");
   const [rw, setRW] = useState<string>(item?.rw || "");
+  const [kmAkhirMotor, setkmAkhirMotor] = useState<number>(
+    Number(item?.kmAkhirMotor) || 0,
+  );
+  const [kodePos, setkodePos] = useState<string>(item?.kodePos || "");
   const [typeComingCustomer, setTypeComingCustomer] = useState<string>(
     item?.typeComingCustomer || "",
   );
@@ -150,291 +158,330 @@ const ModalDetailHistory: React.FC<{
 
   // Synchronize state with the modal opening
   useEffect(() => {
-    if (item) {
-      setNamaPemilik(item.namaPemilik || "");
-      setTglBeli(item.tglBeli || "");
-      setPlatNumber(item.platNumber || "");
-      setNomorMesin(item.nomorMesin || "");
-      setNomorRangka(item.nomorRangka || "");
-      setTypeMotor(item.typeMotor || "");
-      setTahunMotor(item.tahunMotor.toString() || "");
-      setKondisiBensin(item.kondisiBensin.toString() || "");
-      setNoKTP(item.noKTP || "");
-      setNoHP(item.noHP || "");
-      setAlamat(item.alamat || "");
-      setProvinsi(item.provinsi || "");
-      setKota(item.kota || "");
-      setKecamatan(item.kecamatan || "");
-      setKelurahan(item.kelurahan || "");
-      setRT(item.rt || "");
-      setRW(item.rw || "");
-      setTypeComingCustomer(item.typeComingCustomer || "");
-      setAlasanKeAhass(item.alasanKeAhass || "");
-      setHsoIdPenerima(item.hsoIdPenerima || "");
-      setSaranMekanik(item.saranMekanik || "");
-      setDescription(item.description || "Tidak Ada");
-    }
-  }, [item]);
+    setDataItem({
+      id,
+      namaPemilik,
+      tglBeli,
+      platNumber,
+      nomorMesin,
+      nomorRangka,
+      typeMotor,
+      tahunMotor,
+      kondisiBensin,
+      kmAkhirMotor,
+      kodePos,
+      noKTP,
+      noHP,
+      alamat,
+      provinsi,
+      kota,
+      kecamatan,
+      kelurahan,
+      rt,
+      rw,
+      typeComingCustomer,
+      alasanKeAhass,
+      hsoIdPenerima,
+      saranMekanik,
+      // description,
+    });
+  }, [
+    id,
+    namaPemilik,
+    tglBeli,
+    platNumber,
+    nomorMesin,
+    nomorRangka,
+    typeMotor,
+    tahunMotor,
+    kondisiBensin,
+    noKTP,
+    noHP,
+    alamat,
+    kmAkhirMotor,
+    kodePos,
+    provinsi,
+    kota,
+    kecamatan,
+    kelurahan,
+    rt,
+    rw,
+    typeComingCustomer,
+    alasanKeAhass,
+    hsoIdPenerima,
+    saranMekanik,
+    // description,
+  ]);
 
   return (
-    <Modal backdrop="blur" isOpen={isOpen} size="5xl" onClose={onClose}>
+    <Modal
+      backdrop={`blur`}
+      isOpen={isOpen}
+      scrollBehavior={"inside"}
+      size={`5xl`}
+      onOpenChange={onClose}
+    >
       <ModalContent>
-        <ModalHeader className="flex flex-col gap-1">Detail Data</ModalHeader>
-        <ModalBody>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <Input
-              label="Nama Pemilik"
-              value={namaPemilik}
-              onChange={(e) => setNamaPemilik(e.target.value)}
-            />
-            <Input
-              label="Tanggal Pembelian"
-              value={tglBeli}
-              onChange={(e) => setTglBeli(e.target.value)}
-            />
-            <Input
-              label="Plat Nomor"
-              value={platNumber}
-              onChange={(e) => setPlatNumber(e.target.value)}
-            />
-            <Input
-              label="Nomor Mesin"
-              value={nomorMesin}
-              onChange={(e) => setNomorMesin(e.target.value)}
-            />
-            <Input
-              label="Nomor Rangka"
-              value={nomorRangka}
-              onChange={(e) => setNomorRangka(e.target.value)}
-            />
-            <Input
-              label="Tipe Motor"
-              value={typeMotor}
-              onChange={(e) => setTypeMotor(e.target.value)}
-            />
-            <Input
-              label="Tahun Motor"
-              value={tahunMotor}
-              onChange={(e) => setTahunMotor(e.target.value)}
-            />
-            <Input
-              label="Kondisi Bahan Bakar"
-              value={kondisiBensin}
-              onChange={(e) => setKondisiBensin(e.target.value)}
-            />
-            <Input
-              label="No KTP"
-              value={noKTP}
-              onChange={(e) => setNoKTP(e.target.value)}
-            />
-            <Input
-              label="No Hp"
-              value={noHP}
-              onChange={(e) => setNoHP(e.target.value)}
-            />
-            <Input
-              label="Alamat"
-              value={alamat}
-              onChange={(e) => setAlamat(e.target.value)}
-            />
-            <Input
-              label="Provinsi"
-              value={provinsi}
-              onChange={(e) => setProvinsi(e.target.value)}
-            />
-            <Input
-              label="Kota"
-              value={kota}
-              onChange={(e) => setKota(e.target.value)}
-            />
-            <Input
-              label="Kecamatan"
-              value={kecamatan}
-              onChange={(e) => setKecamatan(e.target.value)}
-            />
-            <Input
-              label="Kelurahan"
-              value={kelurahan}
-              onChange={(e) => setKelurahan(e.target.value)}
-            />
-            <Input
-              label="RT"
-              value={rt}
-              onChange={(e) => setRT(e.target.value)}
-            />
-            <Input
-              label="RW"
-              value={rw}
-              onChange={(e) => setRW(e.target.value)}
-            />
-            <Input
-              label="Tipe Coming Customer"
-              value={typeComingCustomer}
-              onChange={(e) => setTypeComingCustomer(e.target.value)}
-            />
-            <Input
-              label="Alasan Ke Ahass"
-              value={alasanKeAhass}
-              onChange={(e) => setAlasanKeAhass(e.target.value)}
-            />
-            <Input
-              label="HsoID Penerima"
-              value={hsoIdPenerima}
-              onChange={(e) => setHsoIdPenerima(e.target.value)}
-            />
-            <Input
-              label="Saran Mekanik"
-              value={saranMekanik}
-              onChange={(e) => setSaranMekanik(e.target.value)}
-            />
-            <Input
-              label="Deskripsi Gagal Upload"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <Input label="Tipe Motor" value={item?.typeMotor} />
-            <Input label="Tahun Motor" value={item?.tahunMotor.toString()} />
-            <Input
-              label="Kondisi Bahan Bakar"
-              value={item?.kondisiBensin.toString()}
-            />
-            <Input label="No KTP" value={item?.noKTP} />
-            <Input label="No Hp" value={item?.noHP} />
-            <Input label="Alamat" value={item?.alamat} />
-            <Input label="Provinsi" value={item?.provinsi} />
-            <Input label="Kota" value={item?.kota} />
-            <Input label="Kecamatan" value={item?.kecamatan} />
-            <Input label="Kelurahan" value={item?.kelurahan} />
-            <Input label="RT" value={item?.rt} />
-            <Input label="RW" value={item?.rw} />
-            <Input
-              label="Tipe Coming Customer"
-              value={item?.typeComingCustomer}
-            />
-            <Input label="Alasan Ke Ahass" value={item?.alasanKeAhass} />
-            <Input label="HsoID Penerima" value={item?.hsoIdPenerima} />
-            <Input label="Saran Mekanik" value={item?.saranMekanik} />
-            <Input
-              label="Deskripsi Gagal Upload"
-              value={item?.description || "Tidak Ada"}
-            />
-          </div>
-          <div>
-            {/* Dynamic Pekerjaan Section */}
-            <div className="mt-4">
-              <h3>Pekerjaan</h3>
-              {pekerjaan.map((job, pekerjaanIndex) => (
-                <div
-                  key={pekerjaanIndex}
-                  className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4"
-                >
-                  <Input
-                    label="Gudang"
-                    value={job.gudang}
-                    onChange={(e) =>
-                      handlePekerjaanChange(
-                        pekerjaanIndex,
-                        "gudang",
-                        e.target.value,
-                      )
-                    }
-                  />
-                  <Input
-                    label="Jenis Pekerjaan"
-                    value={job.jenisPekerjaan}
-                    onChange={(e) =>
-                      handlePekerjaanChange(
-                        pekerjaanIndex,
-                        "jenisPekerjaan",
-                        e.target.value,
-                      )
-                    }
-                  />
-                  <Input
-                    label="Kategori Pekerjaan"
-                    value={job.kategoriPekerjaan}
-                    onChange={(e) =>
-                      handlePekerjaanChange(
-                        pekerjaanIndex,
-                        "kategoriPekerjaan",
-                        e.target.value,
-                      )
-                    }
-                  />
-                  <Input
-                    label="Nama Pekerjaan"
-                    value={job.namaPekerjaan}
-                    onChange={(e) =>
-                      handlePekerjaanChange(
-                        pekerjaanIndex,
-                        "namaPekerjaan",
-                        e.target.value,
-                      )
-                    }
-                  />
-
-                  {/* Dynamic SukuCadang Section */}
-                  <div className="mt-2">
-                    <h4>Suku Cadang</h4>
-                    {job.sukuCadang.map((sc, sukuCadangIndex) => (
-                      <div key={sukuCadangIndex} className="flex gap-2 mb-2">
+        {(onClose) => (
+          <>
+            <ModalHeader className="flex flex-col gap-1">
+              Modal Title
+            </ModalHeader>
+            <ModalBody>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <Input
+                  label="Nama Pemilik"
+                  value={namaPemilik}
+                  onChange={(e) => setNamaPemilik(e.target.value)}
+                />
+                <Input
+                  label="Tanggal Pembelian"
+                  value={tglBeli}
+                  onChange={(e) => setTglBeli(e.target.value)}
+                />
+                <Input
+                  label="Plat Nomor"
+                  value={platNumber}
+                  onChange={(e) => setPlatNumber(e.target.value)}
+                />
+                <Input
+                  label="Nomor Mesin"
+                  value={nomorMesin}
+                  onChange={(e) => setNomorMesin(e.target.value)}
+                />
+                <Input
+                  label="Nomor Rangka"
+                  value={nomorRangka}
+                  onChange={(e) => setNomorRangka(e.target.value)}
+                />
+                <Input
+                  label="Km Akhir Motor"
+                  value={kmAkhirMotor.toString()}
+                  onChange={(e) => setNomorRangka(e.target.value)}
+                />
+                <Input
+                  label="Kode Pos"
+                  value={kodePos}
+                  onChange={(e) => setNomorRangka(e.target.value)}
+                />
+                <Input
+                  label="Tipe Motor"
+                  value={typeMotor}
+                  onChange={(e) => setTypeMotor(e.target.value)}
+                />
+                <Input
+                  label="Tahun Motor"
+                  value={tahunMotor}
+                  onChange={(e) => setTahunMotor(e.target.value)}
+                />
+                <Input
+                  label="Kondisi Bahan Bakar"
+                  value={kondisiBensin.toString()}
+                  onChange={(e) => setKondisiBensin(Number(e.target.value))}
+                />
+                <Input
+                  label="No KTP"
+                  value={noKTP}
+                  onChange={(e) => setNoKTP(e.target.value)}
+                />
+                <Input
+                  label="No Hp"
+                  value={noHP}
+                  onChange={(e) => setNoHP(e.target.value)}
+                />
+                <Input
+                  label="Alamat"
+                  value={alamat}
+                  onChange={(e) => setAlamat(e.target.value)}
+                />
+                <Input
+                  label="Provinsi"
+                  value={provinsi}
+                  onChange={(e) => setProvinsi(e.target.value)}
+                />
+                <Input
+                  label="Kota"
+                  value={kota}
+                  onChange={(e) => setKota(e.target.value)}
+                />
+                <Input
+                  label="Kecamatan"
+                  value={kecamatan}
+                  onChange={(e) => setKecamatan(e.target.value)}
+                />
+                <Input
+                  label="Kelurahan"
+                  value={kelurahan}
+                  onChange={(e) => setKelurahan(e.target.value)}
+                />
+                <Input
+                  label="RT"
+                  value={rt}
+                  onChange={(e) => setRT(e.target.value)}
+                />
+                <Input
+                  label="RW"
+                  value={rw}
+                  onChange={(e) => setRW(e.target.value)}
+                />
+                <Input
+                  label="Tipe Coming Customer"
+                  value={typeComingCustomer}
+                  onChange={(e) => setTypeComingCustomer(e.target.value)}
+                />
+                <Input
+                  label="Alasan Ke Ahass"
+                  value={alasanKeAhass}
+                  onChange={(e) => setAlasanKeAhass(e.target.value)}
+                />
+                <Input
+                  label="HsoID Penerima"
+                  value={hsoIdPenerima}
+                  onChange={(e) => setHsoIdPenerima(e.target.value)}
+                />
+                <Input
+                  label="Saran Mekanik"
+                  value={saranMekanik}
+                  onChange={(e) => setSaranMekanik(e.target.value)}
+                />
+                <Input
+                  label="Deskripsi Gagal Upload"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </div>
+              <div>
+                {/* Dynamic Pekerjaan Section */}
+                <div className="mt-4">
+                  <h3>Pekerjaan</h3>
+                  {pekerjaan.map((job, pekerjaanIndex) => (
+                    <div
+                      key={pekerjaanIndex}
+                      className={`border-t-1 border-gray-200 py-2`}
+                    >
+                      <div
+                        key={pekerjaanIndex}
+                        className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4"
+                      >
                         <Input
-                          label={`Suku Cadang ${sukuCadangIndex + 1}`}
-                          value={sc}
+                          label="Gudang"
+                          value={job.gudang}
                           onChange={(e) =>
-                            handleSukuCadangChange(
+                            handlePekerjaanChange(
                               pekerjaanIndex,
-                              sukuCadangIndex,
+                              "gudang",
                               e.target.value,
                             )
                           }
                         />
-                        <Button
-                          color="danger"
-                          onPress={() =>
-                            removeSukuCadang(pekerjaanIndex, sukuCadangIndex)
+                        <Input
+                          label="Jenis Pekerjaan"
+                          value={job.jenisPekerjaan}
+                          onChange={(e) =>
+                            handlePekerjaanChange(
+                              pekerjaanIndex,
+                              "jenisPekerjaan",
+                              e.target.value,
+                            )
                           }
-                        >
-                          Remove
-                        </Button>
-                      </div>
-                    ))}
-                    <Button
-                      color="success"
-                      onPress={() => addSukuCadang(pekerjaanIndex)}
-                    >
-                      Add Suku Cadang
-                    </Button>
-                  </div>
+                        />
+                        <Input
+                          label="Kategori Pekerjaan"
+                          value={job.kategoriPekerjaan}
+                          onChange={(e) =>
+                            handlePekerjaanChange(
+                              pekerjaanIndex,
+                              "kategoriPekerjaan",
+                              e.target.value,
+                            )
+                          }
+                        />
+                        <Input
+                          label="Nama Pekerjaan"
+                          value={job.namaPekerjaan}
+                          onChange={(e) =>
+                            handlePekerjaanChange(
+                              pekerjaanIndex,
+                              "namaPekerjaan",
+                              e.target.value,
+                            )
+                          }
+                        />
 
-                  <Button
-                    color="danger"
-                    onPress={() => removePekerjaan(pekerjaanIndex)}
-                  >
-                    Remove Pekerjaan
-                  </Button>
+                        {/* Dynamic SukuCadang Section */}
+                        <div className="mt-4">
+                          <h4>Suku Cadang</h4>
+                          {job.sukuCadang.map((sukuCadang, sukuCadangIndex) => (
+                            <div
+                              key={sukuCadangIndex}
+                              className="grid grid-cols-2 gap-4 mb-2"
+                            >
+                              <Input
+                                label="Nama Suku Cadang"
+                                value={sukuCadang.name}
+                                onChange={(e) =>
+                                  handleSukuCadangChange(
+                                    pekerjaanIndex,
+                                    sukuCadangIndex,
+                                    "name",
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                              <Input
+                                label="Jumlah"
+                                type="number"
+                                value={sukuCadang.qty.toString()}
+                                onChange={(e) =>
+                                  handleSukuCadangChange(
+                                    pekerjaanIndex,
+                                    sukuCadangIndex,
+                                    "qty",
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                              <Button
+                                color="danger"
+                                onClick={() =>
+                                  removeSukuCadang(
+                                    pekerjaanIndex,
+                                    sukuCadangIndex,
+                                  )
+                                }
+                              >
+                                Remove
+                              </Button>
+                            </div>
+                          ))}
+                          <Button onClick={() => addSukuCadang(pekerjaanIndex)}>
+                            Add Suku Cadang
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <Button onClick={addPekerjaan}>Add Pekerjaan</Button>
                 </div>
-              ))}
-              <Button color="success" onPress={addPekerjaan}>
-                Add Pekerjaan
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="danger" variant="light" onPress={onClose}>
+                Close
               </Button>
-            </div>
-          </div>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="danger" variant="light" onPress={onClose}>
-            Close
-          </Button>
-          <Button
-            color="primary"
-            onPress={() => {
-              pushDetailHistory(item, pekerjaan);
-              onClose();
-            }}
-          >
-            Action
-          </Button>
-        </ModalFooter>
+              <Button
+                color="primary"
+                onPress={() => {
+                  // console.log(dataItem, pekerjaan);
+                  pushDetailData(dataItem, pekerjaan);
+                  onClose;
+                }}
+              >
+                Action
+              </Button>
+            </ModalFooter>
+          </>
+        )}
       </ModalContent>
     </Modal>
   );
