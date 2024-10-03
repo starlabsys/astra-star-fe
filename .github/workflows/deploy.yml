@@ -3,8 +3,8 @@ name: Next.js CI/CD
 on:
   push:
     branches: [ dev ] # Mengubah branch target menjadi main atau sesuaikan dengan branch yang Anda gunakan
-  pull_request:
-    branches: [ dev ]
+#  pull_request:
+#    branches: [ dev ]
 
 jobs:
   build:
@@ -31,6 +31,8 @@ jobs:
       - name: Build and push Docker image
         env:
           IMAGE_TAG: ${{ github.sha }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
           docker build . -t ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${IMAGE_TAG}
           docker push ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${IMAGE_TAG}
@@ -50,3 +52,6 @@ jobs:
             docker stop astra-star-fe || true
             docker rm astra-star-fe || true
             docker run -d --name astra-star-fe -p 8086:8086 -v /root/astra-star-fe/.env:/home/node/app/.env ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${{ github.sha }}
+
+      - name: Prune unused Docker images
+        run: docker image prune -a -f
