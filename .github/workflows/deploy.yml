@@ -3,8 +3,8 @@ name: Next.js CI/CD
 on:
   push:
     branches: [ dev ] # Mengubah branch target menjadi main atau sesuaikan dengan branch yang Anda gunakan
-  pull_request:
-    branches: [ dev ]
+#  pull_request:
+#    branches: [ dev ]
 
 jobs:
   build:

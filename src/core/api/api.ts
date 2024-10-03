@@ -8,8 +8,8 @@ import {
 } from "@/src/core/api/interface/InterfaceResponseResult";
 
 function baseUrl(): string {
-  // return process.env.BASE_URL ?? "";
-  return "https://api-star.tengkuangonet.my.id/api";
+  return process.env.BASE_URL ?? "";
+  // return "https://api-star.tengkuangonet.my.id/api";
 }
 
 enum Method {
