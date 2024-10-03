@@ -71,7 +71,7 @@ const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data, uuid }) => {
                   color="danger"
                   variant="flat"
                   onPress={() => {
-                    fetchDeleteData(Number(item.id));
+                    fetchDeleteData(Number(item.id), uuid);
                   }} // Pass item to handleOpen
                 >
                   Hapus
