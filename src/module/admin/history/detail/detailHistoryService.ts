@@ -91,12 +91,14 @@ const useDetailHistoryService = (uuid: string) => {
     // const jsonData = [dataItem]; // You can convert it to an array if needed
   };
 
-  const fetchDeleteData = async (id: number) => {
+  const fetchDeleteData = async (id: number, uuid: string) => {
     const resp = await deleteDetailPkb(id);
 
     if (resp === null) {
       return null;
     }
+
+    await fetchDetailHistory(uuid);
   };
 
   useEffect(() => {
