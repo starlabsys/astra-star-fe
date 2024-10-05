@@ -9,6 +9,7 @@ export interface JSONDataPkb {
   typeMotor: string;
   tahunMotor: string;
   kondisiBensin: number;
+  activePromotion: string;
   noKTP: string;
   noHP: string;
   alamat: string;

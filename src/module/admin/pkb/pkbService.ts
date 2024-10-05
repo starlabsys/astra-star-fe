@@ -221,6 +221,7 @@ export const usePkbService = () => {
         noKTP: data[i].noKTP.toString(),
         noHP: data[i].noHP.toString(),
         alamat: data[i].alamat,
+        activePromotion: "-",
         provinsi: data[i].provinsi,
         kota: data[i].kota,
         kecamatan: data[i].kecamatan,
@@ -239,6 +240,8 @@ export const usePkbService = () => {
     const dataUpload = {
       jsonData: jsonData,
     };
+
+    // console.log(jsonData);
 
     const resp = uploadExcel(dataUpload);
 
