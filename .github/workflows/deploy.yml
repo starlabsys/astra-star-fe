@@ -11,6 +11,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18.17.1'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Next.js project
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}  # Sesuaikan jika ada environment lain
+        run: npm run build
+
       - name: Docker login
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
@@ -18,7 +32,7 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build . -t ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${IMAGE_TAG} --target builder
+          docker build . -t ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${IMAGE_TAG}
           docker push ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${IMAGE_TAG}
 
   deploy:
@@ -35,15 +49,7 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${{ github.sha }}
             docker stop astra-star-fe || true
             docker rm astra-star-fe || true
-            
-            # Menyalin .env ke direktori kerja
-            scp /root/astra-star-fe/.env ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:/home/node/app/.env
-            
-            # Menjalankan build di VPS
-            docker run --rm -v /home/node/app/.env:/home/node/app/.env ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${{ github.sha }} npm run build
-            
-            # Menjalankan container dengan environment yang sudah ada
-            docker run -d --name astra-star-fe -p 8086:8086 -v /home/node/app/.env:/home/node/app/.env ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${{ github.sha }}
+            docker run -d --name astra-star-fe -p 8086:8086 -v /root/astra-star-fe/.env:/home/node/app/.env ${{ secrets.DOCKER_USERNAME }}/astra-star-fe:${{ github.sha }}
 
       - name: Prune unused Docker images
         run: docker image prune -a -f
