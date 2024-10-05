@@ -26,9 +26,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
-
-# Menyalin file .env ke dalam image
-COPY .env .env
+COPY --from=builder /app/.env .env
 
 # Membuka port yang akan digunakan aplikasi Next.js
 EXPOSE 8086
