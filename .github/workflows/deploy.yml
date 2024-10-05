@@ -19,7 +19,7 @@ jobs:
 
       - name: Copy .env from VPS
         run: |
-          sshpass -p ${{ secrets.VPS_PASSWORD }} scp -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:/root/astra-star-fe/.env ./.env
+          sshpass -p "${{ secrets.VPS_PASSWORD }}" scp -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:/root/astra-star-fe/.env ./.env
 
       - name: Install dependencies
         run: npm install
