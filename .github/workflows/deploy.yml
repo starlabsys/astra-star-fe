@@ -21,7 +21,7 @@ jobs:
         run: sudo apt-get install sshpass
 
       - name: Check if .env exists
-        run: ls -la /path/to/your/.env
+        run: ls -la /root/astra-star-fe/.env
 
       - name: SSH to VPS and get .env
         run: |
