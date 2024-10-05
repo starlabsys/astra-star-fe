@@ -27,8 +27,8 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
-# Menentukan variabel lingkungan untuk mode produksi
-ENV NODE_ENV production
+# Menyalin file .env ke dalam image
+COPY .env .env
 
 # Membuka port yang akan digunakan aplikasi Next.js
 EXPOSE 8086
