@@ -17,14 +17,10 @@ jobs:
           node-version: '18.17.1'
           cache: 'npm'
 
-      - name: Check connection to VPS
+      - name: SSH to VPS and get .env
         run: |
-          echo "Testing SSH connection..."
-          sshpass -p "${{ secrets.VPS_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} 'whoami'
-
-      - name: Copy .env from VPS
-        run: |
-          sshpass -p "${{ secrets.VPS_PASSWORD }}" scp -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:/root/astra-star-fe/.env ./.env
+          sshpass -p ${{ secrets.VPS_PASSWORD }} ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "cat /root/astra-star-fe/.env" > .env
+      
 
       - name: Install dependencies
         run: npm install
