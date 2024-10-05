@@ -25,7 +25,7 @@ jobs:
 
       - name: SSH to VPS and get .env
         run: |
-          sshpass -p ${{ secrets.VPS_PASSWORD }} ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "cat /root/astra-star-fe/.env" > .env
+          sshpass -p ${{ secrets.VPS_PASSWORD }} ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "sudo cat /root/astra-star-fe/.env" > .env
       
 
       - name: Install dependencies
