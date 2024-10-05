@@ -17,6 +17,10 @@ jobs:
           node-version: '18.17.1'
           cache: 'npm'
 
+      - name: Check connection to VPS
+        run: |
+          sshpass -p "${{ secrets.VPS_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} 'echo "Connection successful"'
+
       - name: Copy .env from VPS
         run: |
           sshpass -p "${{ secrets.VPS_PASSWORD }}" scp -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:/root/astra-star-fe/.env ./.env
