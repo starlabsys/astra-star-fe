@@ -19,7 +19,8 @@ jobs:
 
       - name: Check connection to VPS
         run: |
-          sshpass -p "${{ secrets.VPS_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} 'echo "Connection successful"'
+          echo "Testing SSH connection..."
+          sshpass -p "${{ secrets.VPS_PASSWORD }}" ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} 'whoami'
 
       - name: Copy .env from VPS
         run: |
