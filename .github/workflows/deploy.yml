@@ -20,12 +20,13 @@ jobs:
       - name: Install sshpass
         run: sudo apt-get install sshpass
 
-      - name: Check if .env exists
-        run: ls -la /root/astra-star-fe/.env
+      - name: Check permissions
+        run: |
+          sshpass -p ${{ secrets.VPS_PASSWORD }} ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "ls -l /root/astra-star-fe/.env"
 
       - name: SSH to VPS and get .env
         run: |
-          sshpass -p ${{ secrets.VPS_PASSWORD }} ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "sudo cat /root/astra-star-fe/.env" > .env
+          sshpass -p ${{ secrets.VPS_PASSWORD }} ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "cat /root/astra-star-fe/.env" > .env
       
 
       - name: Install dependencies
