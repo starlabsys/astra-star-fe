@@ -48,7 +48,7 @@ export interface PkbData {
 }
 
 export const usePkbService = () => {
-  const { importExcel, setImportExcel } = usePkbContext(); // Use context's setImportExcel
+  const { setImportExcel } = usePkbContext(); // Use context's setImportExcel
 
   const excelDateFormatted = (serial: number): string => {
     const daysToAdd = 1;
@@ -78,7 +78,7 @@ export const usePkbService = () => {
           const json = XLSX.utils.sheet_to_json<PkbData>(worksheet, {
             header: 1,
           });
-          const [header, ...rows] = json as any[];
+          const [...rows] = json as any[];
 
           const validRows = rows.filter((row) => row && row.length >= 26); // Ensure row is not undefined and has all required columns
 
@@ -242,8 +242,6 @@ export const usePkbService = () => {
     const dataUpload = {
       jsonData: jsonData,
     };
-
-    console.log(jsonData);
 
     const resp = uploadExcel(dataUpload);
 

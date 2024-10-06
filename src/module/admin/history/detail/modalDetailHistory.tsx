@@ -26,12 +26,11 @@ const ModalDetailHistory: React.FC<{
   onClose: () => void;
 }> = ({ isOpen, item, onClose, uuid }) => {
   // Initialize pekerjaan state
-  const { listDetail, setListDetail, pushDetailHistory, pushDetailData } =
-    useDetailHistoryService(uuid);
+  const { pushDetailData } = useDetailHistoryService(uuid);
   const [pekerjaan, setPekerjaan] = useState<Pekerjaan[]>(
     item?.pekerjaan || [],
   );
-  const [scrollBehavior, setScrollBehavior] = React.useState("inside");
+  // const [scrollBehavior, setScrollBehavior] = React.useState("inside");
   const [dataItem, setDataItem] = useState<any>({});
 
   // Add new pekerjaan
@@ -110,7 +109,7 @@ const ModalDetailHistory: React.FC<{
     setPekerjaan(updatedPekerjaan);
   };
   // Local state for all fields
-  const [id, setId] = useState<string>(item?.id || "");
+  const [id] = useState<string>(item?.id || "");
   const [namaPemilik, setNamaPemilik] = useState<string>(
     item?.namaPemilik || "",
   );
