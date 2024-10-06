@@ -12,12 +12,6 @@ RUN npm install
 # Menyalin seluruh sumber kode aplikasi Next.js ke dalam container
 COPY . .
 
-# Menyalin skrip load-env.sh
-COPY load-env.sh ./
-
-# Menjalankan skrip untuk memuat variabel lingkungan
-RUN chmod +x load-env.sh && ./load-env.sh
-
 # Membangun aplikasi Next.js
 RUN npm run build
 
