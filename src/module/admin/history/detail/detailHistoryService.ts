@@ -76,6 +76,7 @@ const useDetailHistoryService = (uuid: string) => {
 
     // Add pekerjaan to dataItem
     dataItem.pekerjaan = pekerjaan;
+    dataItem.activityPromotion = "-";
 
     const jsonData = [dataItem];
 
