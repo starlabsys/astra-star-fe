@@ -3,7 +3,7 @@ name: Next.js CI/CD
 on:
   pull_request:
     branches:
-      - production
+      - prod
       - dev
 
 jobs:
