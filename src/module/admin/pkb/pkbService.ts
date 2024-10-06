@@ -30,6 +30,7 @@ export interface PkbData {
   rw: string;
   typeComingCustomer: string;
   alasanKeAhass: string;
+  activityPromotion: string;
   kategoriPekerjaan1: string;
   jenisPekerjaan1: string;
   namaPekerjaan1: string;
@@ -112,18 +113,19 @@ export const usePkbService = () => {
             alasanKeAhass: row[20],
             hsoIdPenerima: row[21],
             saranMekanik: row[22],
-            kategoriPekerjaan1: row[23],
-            jenisPekerjaan1: row[24],
-            namaPekerjaan1: row[25],
-            gudang1: row[26],
-            sukuCadang1: row[27],
-            qtySukuCadang1: row[28],
-            kategoriPekerjaan2: row[29],
-            jenisPekerjaan2: row[30],
-            namaPekerjaan2: row[31],
-            gudang2: row[32],
-            sukuCadang2: row[33],
-            qtySukuCadang2: row[34],
+            activityPromotion: row[23],
+            kategoriPekerjaan1: row[24],
+            jenisPekerjaan1: row[25],
+            namaPekerjaan1: row[26],
+            gudang1: row[27],
+            sukuCadang1: row[28],
+            qtySukuCadang1: row[29],
+            kategoriPekerjaan2: row[30],
+            jenisPekerjaan2: row[31],
+            namaPekerjaan2: row[32],
+            gudang2: row[33],
+            sukuCadang2: row[34],
+            qtySukuCadang2: row[35],
           }));
 
           setImportExcel(formattedRows); // Update the context state with valid rows
@@ -221,7 +223,7 @@ export const usePkbService = () => {
         noKTP: data[i].noKTP.toString(),
         noHP: data[i].noHP.toString(),
         alamat: data[i].alamat,
-        activePromotion: "-",
+        activePromotion: data[i].activityPromotion ?? "-",
         provinsi: data[i].provinsi,
         kota: data[i].kota,
         kecamatan: data[i].kecamatan,
@@ -241,7 +243,7 @@ export const usePkbService = () => {
       jsonData: jsonData,
     };
 
-    // console.log(jsonData);
+    console.log(jsonData);
 
     const resp = uploadExcel(dataUpload);
 
