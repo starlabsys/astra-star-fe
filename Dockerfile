@@ -28,7 +28,7 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 
 # Membuka port yang akan digunakan aplikasi Next.js
-EXPOSE 8086
+EXPOSE 8089
 
 # Menjalankan aplikasi Next.js di mode produksi
 CMD ["npm", "start"]
