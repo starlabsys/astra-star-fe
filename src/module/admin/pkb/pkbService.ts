@@ -78,7 +78,7 @@ export const usePkbService = () => {
           const json = XLSX.utils.sheet_to_json<PkbData>(worksheet, {
             header: 1,
           });
-          const [...rows] = json as any[];
+          const [header, ...rows] = json as any[];
 
           const validRows = rows.filter((row) => row && row.length >= 26); // Ensure row is not undefined and has all required columns
 
