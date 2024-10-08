@@ -264,9 +264,9 @@ export const usePkbService = () => {
       jsonData: jsonData,
     };
 
-    console.log(dataUpload);
+    // console.log(dataUpload);
 
-    uploadExcel(dataUpload);
+    const resp = uploadExcel(dataUpload);
 
     setImportExcel([]);
 
