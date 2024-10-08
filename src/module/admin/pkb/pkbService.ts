@@ -209,6 +209,27 @@ export const usePkbService = () => {
         pekerjaan.push(listPekerjaan2);
       }
 
+      let rt = "";
+      let rw = "";
+
+      if (data[i].rt.toString().length === 1) {
+        rt = "00" + data[i].rt.toString();
+      } else if (data[i].rt.toString() === "2") {
+        // Fix here: comparing strings
+        rt = "0" + data[i].rt.toString();
+      } else {
+        rt = data[i].rt.toString();
+      }
+
+      if (data[i].rw.toString().length === 1) {
+        rw = "00" + data[i].rw.toString();
+      } else if (data[i].rw.toString() === "2") {
+        // Fix here: comparing strings
+        rw = "0" + data[i].rw.toString();
+      } else {
+        rw = data[i].rw.toString();
+      }
+
       jsonData.push({
         id: "",
         tglBeli: data[i].tglBeli,
@@ -223,14 +244,14 @@ export const usePkbService = () => {
         noKTP: data[i].noKTP.toString(),
         noHP: data[i].noHP.toString(),
         alamat: data[i].alamat,
-        activePromotion: data[i].activityPromotion ?? "-",
+        activePromotion: data[i].activityPromotion ?? "Non - Promotion",
         provinsi: data[i].provinsi,
         kota: data[i].kota,
         kecamatan: data[i].kecamatan,
         kelurahan: data[i].kelurahan,
         kodePos: data[i].kodePos.toString(),
-        rt: data[i].rt.toString(),
-        rw: data[i].rw.toString(),
+        rt: rt,
+        rw: rw,
         typeComingCustomer: data[i].typeComingCustomer,
         alasanKeAhass: data[i].alasanKeAhass,
         pekerjaan: pekerjaan,
@@ -242,6 +263,8 @@ export const usePkbService = () => {
     const dataUpload = {
       jsonData: jsonData,
     };
+
+    console.log(dataUpload);
 
     const resp = uploadExcel(dataUpload);
 
