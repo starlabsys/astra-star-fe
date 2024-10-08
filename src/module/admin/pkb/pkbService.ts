@@ -266,7 +266,7 @@ export const usePkbService = () => {
 
     console.log(dataUpload);
 
-    const resp = uploadExcel(dataUpload);
+    uploadExcel(dataUpload);
 
     setImportExcel([]);
 
