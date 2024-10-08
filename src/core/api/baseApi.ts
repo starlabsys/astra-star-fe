@@ -13,14 +13,13 @@ import {
 import {
   callToastDone,
   callToastError,
-  callToastLoading,
   callToastSuccess,
 } from "@/src/components/toast/callToast";
 
 export const post = async (path: string, body: Record<string, any>) => {
-  const date = new Date();
+  // const date = new Date();
 
-  // callToastLoading(date.getTime().toString());
+  // // callToastLoading(date.getTime().toString());
   const resp = await postFetchData(path, body);
 
   // console.log('Response BaseApi', resp);
@@ -37,9 +36,9 @@ export const post = async (path: string, body: Record<string, any>) => {
   return resp.data;
 };
 export const postLogin = async (path: string, body: Record<string, any>) => {
-  const date = new Date();
+  // const date = new Date();
 
-  // callToastLoading(date.getTime().toString());
+  // // callToastLoading(date.getTime().toString());
   const resp = await postFetchLogin(path, body);
 
   callToastDone(resp.message);
@@ -62,9 +61,9 @@ export const postLogin = async (path: string, body: Record<string, any>) => {
 };
 
 export const get = async (path: string) => {
-  const date = new Date();
+  // const date = new Date();
 
-  // callToastLoading(date.getTime().toString());
+  // // callToastLoading(date.getTime().toString());
   const resp = await getFetchData(path, {});
 
   // console.log("response", resp);
@@ -79,12 +78,12 @@ export const get = async (path: string) => {
 };
 
 export const patch = async (path: string, body: Record<string, any>) => {
-  const date = new Date();
+  // const date = new Date();
 
-  callToastLoading(date.getTime().toString());
+  // callToastLoading(date.getTime().toString());
   const resp = await patchFetchData(path, body);
 
-  callToastDone(date.getTime().toString());
+  // callToastDone(date.getTime().toString());
 
   if (resp.data === null) {
     callToastError(resp.message);
@@ -97,12 +96,12 @@ export const patch = async (path: string, body: Record<string, any>) => {
 };
 
 export const put = async (path: string, body: Record<string, any>) => {
-  const date = new Date();
+  // const date = new Date();
 
-  callToastLoading(date.getTime().toString());
+  // callToastLoading(date.getTime().toString());
   const resp = await putFetchData(path, body);
 
-  callToastDone(date.getTime().toString());
+  // callToastDone(date.getTime().toString());
 
   if (resp.data === null) {
     callToastError(resp.message);
@@ -115,12 +114,12 @@ export const put = async (path: string, body: Record<string, any>) => {
 };
 
 export const deleted = async (path: string, body: Record<string, any>) => {
-  // const date = new Date();
+  // // const date = new Date();
   //
-  // callToastLoading(date.getTime().toString());
+  // // callToastLoading(date.getTime().toString());
   const resp = await deleteFetchData(path, body);
 
-  // callToastDone(date.getTime().toString());
+  // // callToastDone(date.getTime().toString());
 
   if (resp.data === null) {
     callToastError(resp.message);
