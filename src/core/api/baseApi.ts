@@ -54,6 +54,7 @@ export const postLogin = async (path: string, body: Record<string, any>) => {
       secure: process.env.NODE_ENV === "production", // Hanya untuk HTTPS di produksi
       sameSite: "Strict", // Perlindungan CSRF
     });
+    Cookies.set("status_token", resp.data.result.user.statusToken);
   }
   callToastSuccess(resp.message);
 

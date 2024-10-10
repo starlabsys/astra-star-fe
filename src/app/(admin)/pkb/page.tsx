@@ -20,7 +20,7 @@ const page = () => {
     if (token === "IS_ACTIVE") {
       setIsToken(false);
     } else {
-      setIsToken(false);
+      setIsToken(true);
     }
   }, []);
 
