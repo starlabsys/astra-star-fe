@@ -69,6 +69,7 @@ const SidebarNavigation = () => {
           type={`search`}
         />
       </div>
+      {/*<ThemeSwitch />*/}
 
       <ul className="pt-2">
         {Menus.map((menu, index) => (

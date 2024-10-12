@@ -1,12 +1,14 @@
 "use client";
 import Image from "next/image";
 import React from "react";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, useDisclosure } from "@nextui-org/react";
 
 import useProfileService from "@/src/module/admin/profile/profileService";
+import ModalProfileView from "@/src/module/admin/profile/modalProfileView";
 
 const ProfileView = () => {
-  const { profile, fetchRefreshToken } = useProfileService();
+  const { profile } = useProfileService();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   // const data = {
   //   id: 13,
@@ -39,6 +41,10 @@ const ProfileView = () => {
   //   isUseMultiRole: true,
   // };
 
+  const handleOpen = () => {
+    onOpen(); // Open the modal
+  };
+
   if (!profile) {
     return <div>Loading</div>;
   }
@@ -69,20 +75,29 @@ const ProfileView = () => {
           >
             {profile.statusToken}
           </div>
+          {/*<Button*/}
+          {/*  // className={`mt-4 ${profile.statusToken === "IS_ACTIVE" ? "hidden" : ""}`}*/}
+          {/*  className={`mt-4`}*/}
+          {/*  color={`primary`}*/}
+          {/*  variant={`ghost`}*/}
+          {/*  onClick={() => {*/}
+          {/*    fetchRefreshToken(*/}
+          {/*      profile?.refreshTokenAntrian,*/}
+          {/*      profile?.refreshTokenWork,*/}
+          {/*      profile?.refreshTokenPart,*/}
+          {/*    );*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  Ambil Token Baru*/}
+          {/*</Button>*/}
+
           <Button
-            // className={`mt-4 ${profile.statusToken === "IS_ACTIVE" ? "hidden" : ""}`}
-            className={`mt-4`}
-            color={`primary`}
-            variant={`ghost`}
-            onClick={() => {
-              fetchRefreshToken(
-                profile?.refreshTokenAntrian,
-                profile?.refreshTokenWork,
-                profile?.refreshTokenPart,
-              );
-            }}
+            className="mt-4 capitalize"
+            color="primary"
+            variant="ghost"
+            onPress={() => handleOpen()} // Pass item to handleOpen
           >
-            Ambil Token Baru
+            Ganti Token
           </Button>
           {/*<div className="w-full rounded-md my-2 p-4 border-1 text-center border-gray-500">*/}
           {/*  mail@mailexample.com*/}
@@ -131,6 +146,7 @@ const ProfileView = () => {
             />
           </div>
         </div>
+        <ModalProfileView isOpen={isOpen} onClose={onClose} />
       </div>
     </div>
   );
