@@ -32,8 +32,8 @@ const NavbarNavigation = () => {
             width={50}
           />
           <div className="ml-2">
-            <div className="text-black text-xl font-medium">Junior Garcia</div>
-            <div className="text-gray-300 text-md">Software Engineer</div>
+            <div className="text-black text-xl font-medium">Hi, Welcome</div>
+            <div className="text-gray-300 text-md">User Astra</div>
           </div>
         </div>
       </div>
