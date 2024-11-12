@@ -1,10 +1,33 @@
+"use client";
 import { Input } from "@nextui-org/input";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import { SearchIcon } from "./icons";
 
+import { getICookies } from "@/src/utils/ICookies";
+
+const getName = async () => {
+  const name = await getICookies("name");
+
+  if (name) {
+    return name;
+  }
+
+  return "";
+};
+
 const NavbarNavigation = () => {
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    if (!name) {
+      getName().then((res) => {
+        setName(res);
+      });
+    }
+  }, []);
+
   return (
     <div className="px-7 py-5">
       <div className="flex justify-between items-center">
@@ -33,7 +56,7 @@ const NavbarNavigation = () => {
           />
           <div className="ml-2">
             <div className="text-black text-xl font-medium">Hi, Welcome</div>
-            <div className="text-gray-300 text-md">User Astra</div>
+            <div className="text-gray-300 text-md">{name}</div>
           </div>
         </div>
       </div>

@@ -1,5 +1,3 @@
-import Cookies from "js-cookie";
-
 import {
   deleteFetchData,
   getFetchData,
@@ -48,14 +46,14 @@ export const postLogin = async (path: string, body: Record<string, any>) => {
 
     return null;
   }
-  if (resp.data.result.token !== "") {
-    Cookies.set("token", resp.data.result.token, {
-      expires: 1, // Cookie berfungsi selama 1 hari
-      secure: process.env.NODE_ENV === "production", // Hanya untuk HTTPS di produksi
-      sameSite: "Strict", // Perlindungan CSRF
-    });
-    Cookies.set("status_token", resp.data.result.user.statusToken);
-  }
+  // if (resp.data.result.token !== "") {
+  //   Cookies.set("token", resp.data.result.token, {
+  //     expires: 1, // Cookie berfungsi selama 1 hari
+  //     secure: process.env.NODE_ENV === "production", // Hanya untuk HTTPS di produksi
+  //     sameSite: "Strict", // Perlindungan CSRF
+  //   });
+  //   Cookies.set("status_token", resp.data.result.user.statusToken);
+  // }
   callToastSuccess(resp.message);
 
   return resp.data;

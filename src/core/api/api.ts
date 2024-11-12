@@ -1,11 +1,8 @@
-"use server";
-
-import { cookies } from "next/headers";
-
 import {
   ErrorData,
   ReturnResult,
 } from "@/src/core/api/interface/InterfaceResponseResult";
+import { getICookies } from "@/src/utils/ICookies";
 
 function baseUrl(): string {
   // return process.env.BASE_URL ?? "";
@@ -21,13 +18,11 @@ enum Method {
   HEAD = "HEAD",
 }
 
-const cookieStore = cookies();
-
 const header = async (): Promise<HeadersInit | undefined> => {
-  const token = await cookieStore.get("token");
+  const token = await getICookies("token");
 
   return {
-    Authorization: `Bearer ${token?.value}`,
+    Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
   };
 };
@@ -258,13 +253,13 @@ export const postFetchLogin = async (
       const statusToken = resp.data.result.user.statusToken;
 
       // console.log("Token Set to Cookie", token);
-      cookieStore.set("token", token, {
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-      });
-
-      cookieStore.set("status_token", statusToken, {
-        expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-      });
+      // cookieStore.set("token", token, {
+      //   expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      // });
+      //
+      // cookieStore.set("status_token", statusToken, {
+      //   expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      // });
     }
   }
 

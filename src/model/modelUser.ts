@@ -19,6 +19,8 @@ export interface User {
   username: string;
   name: string;
   id: number;
+  statusToken: string;
+  isMultiRole: boolean;
 }
 
 // Converts JSON strings to/from your types
