@@ -153,7 +153,8 @@ export const usePkbService = () => {
 
         if (data[i].sukuCadang1) {
           const splitPart = data[i].sukuCadang1.split("|");
-          const splitQty = data[i].qtySukuCadang1.split("|");
+          // const splitQty = data[i].qtySukuCadang1.split("|");
+          const splitQty = String(data[i].qtySukuCadang1).split("|");
 
           for (let key = 0; key < splitPart.length; key++) {
             if (splitPart[key] !== "") {
