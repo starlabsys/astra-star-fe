@@ -3,17 +3,17 @@ FROM node:22.7.0 as builder
 
 WORKDIR /app
 
-# Menyalin file package.json dan package-lock.json (jika ada)
-COPY package*.json ./
+# Menyalin file package.json dan yarn.lock
+COPY package.json yarn.lock ./
 
 # Menginstal dependensi
-RUN npm install
+RUN npm i -g yarn && yarn install --frozen-lockfile
 
 # Menyalin seluruh sumber kode aplikasi Next.js ke dalam container
 COPY . .
 
 # Membangun aplikasi Next.js
-RUN npm run build
+RUN yarn build
 
 # Tahap 2: Produksi
 FROM node:22.7.0 as runner
@@ -31,4 +31,4 @@ COPY --from=builder /app/package.json ./package.json
 EXPOSE 3003
 
 # Menjalankan aplikasi Next.js di mode produksi
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
