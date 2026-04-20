@@ -6,7 +6,7 @@ import { getICookies } from "@/src/utils/ICookies";
 
 function baseUrl(): string {
   // return process.env.BASE_URL ?? "";
-  return "https://api.ahasssystemmobile.com/api";
+  return "https://new.be.ahasssystemmobile.com/api";
 }
 
 enum Method {
