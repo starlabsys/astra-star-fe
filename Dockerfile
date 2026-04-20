@@ -1,5 +1,5 @@
 # Tahap 1: Pembangunan (Build)
-FROM node:22.7.0 as builder
+FROM node:22.7.0 AS builder
 
 WORKDIR /app
 
@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 
 # Menginstal dependensi
-RUN npm i -g yarn && yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile
 
 # Menyalin seluruh sumber kode aplikasi Next.js ke dalam container
 COPY . .
@@ -16,7 +16,7 @@ COPY . .
 RUN yarn build
 
 # Tahap 2: Produksi
-FROM node:22.7.0 as runner
+FROM node:22.7.0 AS runner
 
 WORKDIR /app
 
