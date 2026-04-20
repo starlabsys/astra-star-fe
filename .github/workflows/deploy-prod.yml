@@ -44,7 +44,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
-          password: ${{ secrets.VPS_KEY }}
+          key: ${{ secrets.VPS_KEY }}
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/star-fe:${{ github.sha }}
             docker stop star-fe || true
