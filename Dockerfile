@@ -1,5 +1,5 @@
 # Tahap 1: Pembangunan (Build)
-FROM node:18.17.1 as builder
+FROM node:22.7.0 as builder
 
 WORKDIR /app
 
@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Menginstal dependensi
-RUN npm install --legacy-peer-deps
+RUN npm install
 
 # Menyalin seluruh sumber kode aplikasi Next.js ke dalam container
 COPY . .
@@ -16,7 +16,7 @@ COPY . .
 RUN npm run build
 
 # Tahap 2: Produksi
-FROM node:18.17.1 as runner
+FROM node:22.7.0 as runner
 
 WORKDIR /app
 
