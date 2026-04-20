@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Menginstal dependensi
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Menyalin seluruh sumber kode aplikasi Next.js ke dalam container
 COPY . .
