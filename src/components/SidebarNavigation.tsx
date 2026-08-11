@@ -4,7 +4,8 @@ import { BsArrowLeftShort, BsSearch } from "react-icons/bs";
 import { RiDashboardFill } from "react-icons/ri";
 import Image from "next/image";
 import Link from "next/link";
-import Cookies from "js-cookie";
+
+import { hapusSesi } from "@/src/utils/ICookies";
 
 const SidebarNavigation = () => {
   const [isOpen, setIsOpen] = React.useState(true);
@@ -33,8 +34,9 @@ const SidebarNavigation = () => {
   ];
 
   const handleLogout = () => {
-    Cookies.remove("token");
-    Cookies.remove("status_token");
+    // Sebelumnya cookie `name` tertinggal, sehingga nama user masih terpampang
+    // di navbar setelah logout.
+    hapusSesi();
   };
 
   return (

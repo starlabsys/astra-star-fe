@@ -2,7 +2,7 @@ import {
   ErrorData,
   ReturnResult,
 } from "@/src/core/api/interface/InterfaceResponseResult";
-import { getICookies } from "@/src/utils/ICookies";
+import { getICookies, hapusSesi } from "@/src/utils/ICookies";
 
 function baseUrl(): string {
   // return process.env.BASE_URL ?? "";
@@ -17,6 +17,32 @@ enum Method {
   DELETE = "DELETE",
   HEAD = "HEAD",
 }
+
+const HALAMAN_LOGIN = "/login";
+
+/**
+ * Tangani token yang sudah tidak berlaku.
+ *
+ * Tanpa ini 401 jatuh ke cabang "status tak dikenal" dan berakhir sebagai
+ * `data: null`, sehingga pemanggil merender daftar kosong — tidak bisa
+ * dibedakan dari "memang tidak ada data". Sesi yang habis harus terlihat
+ * sebagai sesi yang habis.
+ */
+const tanganiSesiHabis = () => {
+  hapusSesi();
+
+  // Hanya relevan di browser; saat dipanggil dari server tidak ada yang bisa
+  // dialihkan, dan cookie-nya sudah dibersihkan.
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  // Jangan mengalihkan kalau sudah di halaman login — request yang gagal di
+  // sana akan membuat halamannya memuat ulang terus-menerus.
+  if (window.location.pathname !== HALAMAN_LOGIN) {
+    window.location.href = HALAMAN_LOGIN;
+  }
+};
 
 const header = async (): Promise<HeadersInit | undefined> => {
   const token = await getICookies("token");
@@ -122,6 +148,15 @@ const fetchData = async (
           statusCode: res.status,
           data: respJson,
         };
+      }
+
+      if (res.status === 401) {
+        tanganiSesiHabis();
+
+        throw new ErrorData(
+          "Sesi Anda sudah berakhir. Silakan login kembali.",
+          401,
+        );
       }
 
       // Handle known error statuses
