@@ -66,6 +66,19 @@ export const usePkbService = () => {
     return `${day}-${month}-${year}`;
   };
 
+  // Nilai RT/RW dari Excel bisa berupa number, string, atau kosong sama sekali.
+  // Kembalikan string kosong bila tidak ada isinya, biar backend yang menolak
+  // lewat validator "Field RT is empty" alih-alih crash di sini.
+  const padRtRw = (value: string | number | null | undefined): string => {
+    const raw = String(value ?? "").trim();
+
+    if (raw === "") {
+      return "";
+    }
+
+    return raw.length === 1 ? "00" + raw : raw;
+  };
+
   const importXlsx = async (file: File): Promise<void> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -80,7 +93,15 @@ export const usePkbService = () => {
           });
           const [header, ...rows] = json as any[];
 
-          const validRows = rows.filter((row) => row && row.length >= 26); // Ensure row is not undefined and has all required columns
+          // Baris template sering menyisakan kolom bantu terisi jauh di bawah
+          // data asli, sehingga row.length tetap besar walau barisnya kosong.
+          // Pakai kolom kunci sebagai penanda baris berisi data.
+          const validRows = rows.filter(
+            (row) =>
+              row &&
+              String(row[1] ?? "").trim() !== "" && // namaPemilik
+              String(row[3] ?? "").trim() !== "", // platNumber
+          );
 
           if (validRows.length === 0) {
             console.error("No valid data rows found in the Excel sheet.");
@@ -210,26 +231,8 @@ export const usePkbService = () => {
         pekerjaan.push(listPekerjaan2);
       }
 
-      let rt = "";
-      let rw = "";
-
-      if (data[i].rt.toString().length === 1) {
-        rt = "00" + data[i].rt.toString();
-      } else if (data[i].rt.toString() === "2") {
-        // Fix here: comparing strings
-        rt = "0" + data[i].rt.toString();
-      } else {
-        rt = data[i].rt.toString();
-      }
-
-      if (data[i].rw.toString().length === 1) {
-        rw = "00" + data[i].rw.toString();
-      } else if (data[i].rw.toString() === "2") {
-        // Fix here: comparing strings
-        rw = "0" + data[i].rw.toString();
-      } else {
-        rw = data[i].rw.toString();
-      }
+      const rt = padRtRw(data[i].rt);
+      const rw = padRtRw(data[i].rw);
 
       jsonData.push({
         id: "",
