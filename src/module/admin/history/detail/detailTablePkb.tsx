@@ -14,6 +14,12 @@ import ModalDetailHistory from "./modalDetailHistory";
 
 import { ListDetailHistoryPkb } from "@/src/model/modelDetailHistory";
 import useDetailHistoryService from "@/src/module/admin/history/detail/detailHistoryService";
+import {
+  URUTAN_TAHAP,
+  labelTahap,
+  nomorTahap,
+  tampilanStatus,
+} from "@/src/module/admin/history/statusLabel";
 
 interface DetailTablePkbProps {
   data: ListDetailHistoryPkb[];
@@ -41,6 +47,8 @@ const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data, uuid }) => {
           <TableColumn>Tipe Motor</TableColumn>
           <TableColumn>Alamat</TableColumn>
           <TableColumn>Status</TableColumn>
+          <TableColumn>Tahap Terakhir</TableColumn>
+          <TableColumn>Keterangan</TableColumn>
           <TableColumn>Aksi</TableColumn>
         </TableHeader>
         <TableBody>
@@ -52,9 +60,33 @@ const DetailTablePkb: React.FC<DetailTablePkbProps> = ({ data, uuid }) => {
               <TableCell>{item.alamat}</TableCell>
               <TableCell>
                 <div
-                  className={`${item.status === "SUCCESS" ? "text-green-400 border-1 border-green-600" : "text-orange-300 border-1 border-orange-600"} text-center w-32 rounded-lg p-2 font-semibold`}
+                  className={`${tampilanStatus(item.status).className} border-1 text-center w-32 rounded-lg p-2 font-semibold`}
                 >
-                  {item.status}
+                  {tampilanStatus(item.status).label}
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="w-48">
+                  <span className="font-medium">
+                    {labelTahap(item.statusData)}
+                  </span>
+                  {nomorTahap(item.statusData) > 0 && (
+                    <span className="block text-xs text-slate-400">
+                      Tahap {nomorTahap(item.statusData)} dari{" "}
+                      {URUTAN_TAHAP.length}
+                    </span>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell>
+                {/* Alasan gagal/dilewati sebelumnya hanya terlihat setelah
+                    membuka modal, padahal itu justru yang dicari user ketika
+                    sebuah baris tidak selesai. */}
+                <div
+                  className="max-w-xs truncate text-sm text-slate-500"
+                  title={item.description}
+                >
+                  {item.description || "-"}
                 </div>
               </TableCell>
               <TableCell className={`gap-4`}>

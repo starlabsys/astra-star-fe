@@ -14,6 +14,13 @@ export interface Result {
   listData: ListDetailHistoryPkb[];
 }
 
+export interface RiwayatStatus {
+  status: string;
+  statusData: string;
+  description: string;
+  createdAt: string;
+}
+
 export interface ListDetailHistoryPkb {
   id: string;
   alamat: string;
@@ -51,6 +58,8 @@ export interface ListDetailHistoryPkb {
   createdAt: string;
   description: string;
   pekerjaan: Pekerjaan[];
+  /** Bisa kosong untuk record lama yang dibuat sebelum jejak status dicatat. */
+  riwayatStatus?: RiwayatStatus[];
 }
 
 export interface Pekerjaan {

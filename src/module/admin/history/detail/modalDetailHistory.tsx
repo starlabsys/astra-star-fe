@@ -18,6 +18,10 @@ import {
   Pekerjaan,
 } from "@/src/model/modelDetailHistory";
 import useDetailHistoryService from "@/src/module/admin/history/detail/detailHistoryService";
+import {
+  labelTahap,
+  tampilanStatus,
+} from "@/src/module/admin/history/statusLabel";
 
 const ModalDetailHistory: React.FC<{
   isOpen: boolean;
@@ -349,6 +353,44 @@ const ModalDetailHistory: React.FC<{
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </div>
+
+              {/* Jejak tahap. `history` hanya menyimpan tahap terakhir, jadi
+                  daftar ini datang dari tabel history_status_log di BE. */}
+              <div className="mt-6">
+                <h3 className="font-semibold">Riwayat Status</h3>
+                {(item?.riwayatStatus ?? []).length === 0 ? (
+                  <p className="mt-2 text-sm text-slate-400">
+                    Belum ada riwayat tercatat untuk data ini.
+                  </p>
+                ) : (
+                  <ol className="mt-3 border-l-1 border-slate-200 pl-4">
+                    {(item?.riwayatStatus ?? []).map((jejak, jejakIndex) => (
+                      <li key={jejakIndex} className="relative pb-4">
+                        <span className="absolute -left-[21px] top-1 h-2 w-2 rounded-full bg-slate-400" />
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-medium">
+                            {labelTahap(jejak.statusData)}
+                          </span>
+                          <span
+                            className={`${tampilanStatus(jejak.status).className} border-1 rounded-md px-2 py-0.5 text-xs font-semibold`}
+                          >
+                            {tampilanStatus(jejak.status).label}
+                          </span>
+                        </div>
+                        <div className="text-xs text-slate-400">
+                          {new Date(jejak.createdAt).toLocaleString("id-ID")}
+                        </div>
+                        {jejak.description && (
+                          <div className="mt-1 text-sm text-slate-500">
+                            {jejak.description}
+                          </div>
+                        )}
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </div>
+
               <div>
                 {/* Dynamic Pekerjaan Section */}
                 <div className="mt-4">
